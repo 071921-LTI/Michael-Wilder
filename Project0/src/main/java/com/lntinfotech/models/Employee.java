@@ -1,42 +1,43 @@
 package com.lntinfotech.models;
 
-public class User {
+import java.io.Serializable;
 
-	private int dlNum;
+public class Employee implements Serializable{
+	private int id;
 	private String firstName;
 	private String lastName;
+	private String role;
+	private double salary;
 	private String email;
 	private String password;
-	private int accountNum;
-	private int routeNum;
 	
 	
-	
-	public User(String email, String password) {
+	public Employee(String email, String password) {
 		super();
 		this.email = email;
 		this.password = password;
 	}
-	public User(int dlNum) {
+	public Employee(String email) {
 		super();
-		this.dlNum = dlNum;
+		this.email = email;
 	}
-	@Override
-	public String toString() {
-		return "User [dlNum=" + dlNum + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", password=" + password + ", accountNum=" + accountNum + ", routeNum=" + routeNum + "]";
+	public Employee(int id) {
+		super();
+		this.id = id;
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + accountNum;
-		result = prime * result + dlNum;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result + id;
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + routeNum;
+		result = prime * result + ((role == null) ? 0 : role.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(salary);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
 	@Override
@@ -47,11 +48,7 @@ public class User {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
-		if (accountNum != other.accountNum)
-			return false;
-		if (dlNum != other.dlNum)
-			return false;
+		Employee other = (Employee) obj;
 		if (email == null) {
 			if (other.email != null)
 				return false;
@@ -61,6 +58,8 @@ public class User {
 			if (other.firstName != null)
 				return false;
 		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (id != other.id)
 			return false;
 		if (lastName == null) {
 			if (other.lastName != null)
@@ -72,31 +71,40 @@ public class User {
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
-		if (routeNum != other.routeNum)
+		if (role == null) {
+			if (other.role != null)
+				return false;
+		} else if (!role.equals(other.role))
+			return false;
+		if (Double.doubleToLongBits(salary) != Double.doubleToLongBits(other.salary))
 			return false;
 		return true;
 	}
-	public User() {
+	@Override
+	public String toString() {
+		return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", role=" + role
+				+ ", salary=" + salary + ", email=" + email + ", password=" + password + "]";
+	}
+	public Employee(int id, String firstName, String lastName, String role, double salary, String email,
+			String password) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.role = role;
+		this.salary = salary;
+		this.email = email;
+		this.password = password;
+	}
+	public Employee() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public User(int dlNum, String firstName, String lastName, String email, String password, int accountNum,
-			int routeNum) {
-		super();
-		this.dlNum = dlNum;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.password = password;
-		this.accountNum = accountNum;
-		this.routeNum = routeNum;
+	public int getId() {
+		return id;
 	}
-	
-	public int getDlNum() {
-		return dlNum;
-	}
-	public void setDlNum(int dlNum) {
-		this.dlNum = dlNum;
+	public void setId(int id) {
+		this.id = id;
 	}
 	public String getFirstName() {
 		return firstName;
@@ -110,6 +118,18 @@ public class User {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
+	public double getSalary() {
+		return salary;
+	}
+	public void setSalary(double salary) {
+		this.salary = salary;
+	}
 	public String getEmail() {
 		return email;
 	}
@@ -122,16 +142,5 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public int getAccountNum() {
-		return accountNum;
-	}
-	public void setAccountNum(int accountNum) {
-		this.accountNum = accountNum;
-	}
-	public int getRouteNum() {
-		return routeNum;
-	}
-	public void setRouteNum(int routeNum) {
-		this.routeNum = routeNum;
-	}
+	
 }

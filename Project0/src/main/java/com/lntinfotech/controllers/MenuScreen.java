@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import com.lntinfotech.exceptions.AuthException;
 import com.lntinfotech.exceptions.UserNotFoundException;
+import com.lntinfotech.models.Employee;
 import com.lntinfotech.models.User;
 import com.lntinfotech.services.AuthService;
 import com.lntinfotech.services.AuthServiceImpl;
@@ -22,35 +23,68 @@ public class MenuScreen {
 		input = sc.nextLine();
 		switch(input) {
 		case "1":
-			System.out.println("Enter email address:");
-			String email = sc.nextLine();
+			System.out.println("Enter: \nE For Employee Login\nC For Customer Login\n3 to exit");
+			input = sc.nextLine();
+			switch (input) {
+			case "E":
+				System.out.println("Enter email address:");
+				String email = sc.nextLine();
 
-			try {
-				User user = us.getUser(email);
-				System.out.println("Enter password:");
-				String password = sc.nextLine();
-				User toBeChecked = new User(email, password);
-//				if(as.login(toBeChecked)) {
-//					// do something
-//				}
-				if(as.login(toBeChecked)) {
-				System.out.println("Successfully logged in!");
-				userView();
-				//input = "3";
-				} else {
+				try {
+					User user = us.getUser(email);
+					System.out.println("Enter password:");
+					String password = sc.nextLine();
+					Employee toBeChecked = new Employee(email, password);
+//					if(as.login(toBeChecked)) {
+//						// do something
+//					}
+					if(as.login(toBeChecked)) {
+					System.out.println("Successfully logged in!");
+					employeeView();
+					//input = "3";
+					} else {
+						System.out.println("Wrong credentials");
+					}
+				} catch (UserNotFoundException e) {
+					System.out.println("User was not found.");
+				} catch (AuthException e) {
+					System.out.println("Wrong credentials");
+				} catch (NullPointerException e) {
 					System.out.println("Wrong credentials");
 				}
-			} catch (UserNotFoundException e) {
-				System.out.println("User was not found.");
-			} catch (AuthException e) {
-				System.out.println("Wrong credentials");
-			} catch (NullPointerException e) {
-				System.out.println("Wrong credentials");
+				break;
+			case "C":
+				System.out.println("Enter email address:");
+				String email1 = sc.nextLine();
+
+				try {
+					User user = us.getUser(email1);
+					System.out.println("Enter password:");
+					String password = sc.nextLine();
+					User toBeChecked = new User(email1, password);
+//					if(as.login(toBeChecked)) {
+//						// do something
+//					}
+					if(as.login(toBeChecked)) {
+					System.out.println("Successfully logged in!");
+					userView();
+					//input = "3";
+					} else {
+						System.out.println("Wrong credentials");
+					}
+				} catch (UserNotFoundException e) {
+					System.out.println("User was not found.");
+				} catch (AuthException e) {
+					System.out.println("Wrong credentials");
+				} catch (NullPointerException e) {
+					System.out.println("Wrong credentials");
+				}
+				break;
 			}
-			break;
+			
 		case "2":
 			System.out.println("Enter Your Driver's License Number: ");
-			String dlNum = sc.nextLine();
+			int dlNum = sc.nextInt();
 			
 			System.out.println("Enter Your First Name: ");
 			String firstName = sc.nextLine();
@@ -66,12 +100,12 @@ public class MenuScreen {
 			String passwordNew = sc.nextLine();
 			
 			System.out.println("Enter Credit Card Type: ");
-			String cct = sc.nextLine();
+			int accountNum = sc.nextInt();
 			
 			System.out.println("Enter Credit Card Number: ");
-			String ccn = sc.nextLine();
+			int routeNum = sc.nextInt();
 			
-			if(us.addUser(new User(dlNum, firstName, lastName, emailNew, passwordNew, cct, ccn))) {
+			if(us.addUser(new User(dlNum, firstName, lastName, emailNew, passwordNew, accountNum, routeNum))) {
 				System.out.println("Register successful!");
 			}else {
 				System.out.println("Unable to accomplish operation.");
