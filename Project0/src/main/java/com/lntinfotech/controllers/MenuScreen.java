@@ -34,13 +34,11 @@ public class MenuScreen {
 				String email = sc.nextLine();
 
 				try {
-					Employee emp = es.getEmployeeByEmail(email);
+
 					System.out.println("Enter password:");
 					String password = sc.nextLine();
 					Employee toBeChecked = new Employee(email, password);
-//					if(as.login(toBeChecked)) {
-//						// do something
-//					}
+
 					if(es.login(toBeChecked)) {
 					System.out.println("Successfully logged in!");
 					employeeView();
@@ -62,7 +60,7 @@ public class MenuScreen {
 				String email1 = sc.nextLine();
 
 				try {
-					User user = us.getUserByEmail(email1);
+
 					System.out.println("Enter password:");
 					String password = sc.nextLine();
 					User toBeChecked = new User(email1, password);
@@ -88,7 +86,7 @@ public class MenuScreen {
 			
 		case "2":
 			System.out.println("Enter Your Driver's License Number: ");
-			int dlNum = sc.nextInt();
+			int userId = sc.nextInt();
 			
 			System.out.println("Enter Your First Name: ");
 			String firstName = sc.nextLine();
@@ -102,7 +100,7 @@ public class MenuScreen {
 			System.out.println("Enter password: ");
 			String passwordNew = sc.nextLine();
 			
-//			if(us.addUser(new User(dlNum, firstName, lastName, emailNew, passwordNew))) {
+//			if(us.addUser(new User(userId, firstName, lastName, emailNew, passwordNew))) {
 //				System.out.println("Register successful!");
 //			}else {
 //				System.out.println("Unable to accomplish operation.");
@@ -138,7 +136,7 @@ public class MenuScreen {
 	public static void employeeView() {
 
 		do {
-			System.out.println("Enter: \n1 to View Available Vehicles\n2 to View All Payments\n3 to Add an Vehicle\4 to Remove a Vehicle\5 to Accept or Reject an Offer");
+			System.out.println("Enter: \n1 to View Available Vehicles\n2 to View All Payments\n3 to Add an Vehicle\n4 to Remove a Vehicle\n5 to Accept or Reject an Offer");
 			input = sc.nextLine();
 			switch(input) {
 			case "1": System.out.println();

@@ -2,7 +2,6 @@ package com.lntinfotech.services;
 
 import com.lntinfotech.exceptions.AuthException;
 import com.lntinfotech.exceptions.UserNotFoundException;
-import com.lntinfotech.models.Employee;
 import com.lntinfotech.models.User;
 
 import java.util.List;
@@ -18,9 +17,6 @@ public class UserServiceImpl implements UserService{
 		return ud.addUser(user);
 	}
 
-	public User getUser(String email) throws UserNotFoundException {
-		return ud.getUserByEmail(email);
-	}
 
 	public boolean login(User user) throws AuthException, UserNotFoundException{
 	User persistedUser = ud.getUserByEmail(user.getEmail());
@@ -31,22 +27,20 @@ public class UserServiceImpl implements UserService{
 	}
 	}
 
-	@Override
-	public User getUserByEmail(String email) throws UserNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	@Override
 	public List<User> getUser() {
-		// TODO Auto-generated method stub
-		return null;
+		return ud.getUser();
 	}
 
 	@Override
 	public User getUserById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return ud.getUserById(id);
+	}
+
+	@Override
+	public User getUserByEmail(String email) throws UserNotFoundException {
+		return ud.getUserByEmail(email);
 	}
 
 

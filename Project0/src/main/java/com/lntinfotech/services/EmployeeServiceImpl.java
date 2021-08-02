@@ -2,12 +2,10 @@ package com.lntinfotech.services;
 
 import com.lntinfotech.daos.EmployeeDao;
 import com.lntinfotech.daos.EmployeePostgres;
-import com.lntinfotech.daos.UserDao;
-import com.lntinfotech.daos.UserPostgres;
 import com.lntinfotech.exceptions.AuthException;
 import com.lntinfotech.exceptions.UserNotFoundException;
 import com.lntinfotech.models.Employee;
-import com.lntinfotech.models.User;
+
 
 public class EmployeeServiceImpl implements EmployeeService {
 

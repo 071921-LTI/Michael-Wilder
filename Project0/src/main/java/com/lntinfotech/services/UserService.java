@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.lntinfotech.exceptions.AuthException;
 import com.lntinfotech.exceptions.UserNotFoundException;
-import com.lntinfotech.models.Employee;
 import com.lntinfotech.models.User;
 
 public interface UserService {
