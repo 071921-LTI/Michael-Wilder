@@ -1,22 +1,27 @@
 package com.lntinfotech.controllers;
 
+import java.util.List;
 import java.util.Scanner;
 
 import com.lntinfotech.exceptions.AuthException;
 import com.lntinfotech.exceptions.UserNotFoundException;
 import com.lntinfotech.models.Employee;
 import com.lntinfotech.models.User;
+import com.lntinfotech.models.Vehicles;
 import com.lntinfotech.services.AuthService;
 import com.lntinfotech.services.AuthServiceImpl;
 import com.lntinfotech.services.EmployeeService;
 import com.lntinfotech.services.EmployeeServiceImpl;
 import com.lntinfotech.services.UserService;
 import com.lntinfotech.services.UserServiceImpl;
+import com.lntinfotech.services.VehicleService;
+import com.lntinfotech.services.VehicleServiceImpl;
 
 public class MenuScreen {
 	static Scanner sc = new Scanner(System.in);
 	static UserService us = new UserServiceImpl();
 	static EmployeeService es = new EmployeeServiceImpl();
+	static VehicleService vs = new VehicleServiceImpl();
 	static AuthService as = new AuthServiceImpl();
 	static String input;
 	public static void display() {
@@ -117,7 +122,11 @@ public class MenuScreen {
 			System.out.println("Enter: \n1 to View Available Vehicles\n2 to View Previous Purchases\n3 to View Remaining Payments\4 to Make an Offer");
 			input = sc.nextLine();
 			switch(input) {
-			case "1": System.out.println();
+			case "1": 
+				List<Vehicles> off = vs.getVehicle();
+				for(Vehicles u : off) {
+					System.out.println(u);
+				}
 			break;
 			case "2": System.out.println();
 			break;

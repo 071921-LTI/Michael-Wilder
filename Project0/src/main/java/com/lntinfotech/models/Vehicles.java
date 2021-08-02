@@ -1,5 +1,7 @@
 package com.lntinfotech.models;
 
+import java.util.List;
+
 import com.lntinfotech.daos.VehicleDao;
 import com.lntinfotech.daos.VehiclePostgres;
 
@@ -164,5 +166,7 @@ public class Vehicles{
 	public void setEmplId(Employee emplId) {
 		this.emplId = emplId;
 	}
+
+
 
 }
