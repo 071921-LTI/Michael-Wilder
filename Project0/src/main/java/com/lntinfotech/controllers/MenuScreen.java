@@ -85,8 +85,6 @@ public class MenuScreen {
 			}
 			
 		case "2":
-			System.out.println("Enter Your Driver's License Number: ");
-			int userId = sc.nextInt();
 			
 			System.out.println("Enter Your First Name: ");
 			String firstName = sc.nextLine();
@@ -100,11 +98,11 @@ public class MenuScreen {
 			System.out.println("Enter password: ");
 			String passwordNew = sc.nextLine();
 			
-//			if(us.addUser(new User(userId, firstName, lastName, emailNew, passwordNew))) {
-//				System.out.println("Register successful!");
-//			}else {
-//				System.out.println("Unable to accomplish operation.");
-//			}
+			if(us.addUser(new User(firstName, lastName, emailNew, passwordNew)) > 0) {
+				System.out.println("Register successful!");
+			}else {
+				System.out.println("Unable to accomplish operation.");
+			}
 			break;
 		case "3": System.out.println("Goodbye");
 		break;

@@ -18,12 +18,12 @@ public class User {
 	public void setToString1(boolean toString1) {
 		this.toString1 = toString1;
 	}
-	public User(int userId, String firstName, String lastName, String email) {
+	public User(String firstName, String lastName, String email, String password) {
 		super();
-		this.userId = userId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.password = password;
 	}
 	public User(String firstName, String lastName, String email) {
 		super();
@@ -108,6 +108,13 @@ public class User {
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
+	}
+	public User(int userId, String firstName, String lastName, String email) {
+		super();
+		this.userId = userId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
 	}
 	public int getUserId() {
 		return userId;
