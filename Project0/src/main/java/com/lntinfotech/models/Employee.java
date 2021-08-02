@@ -6,12 +6,21 @@ public class Employee implements Serializable{
 	private int id;
 	private String firstName;
 	private String lastName;
-	private String role;
-	private double salary;
 	private String email;
 	private String password;
+	private boolean toString1;
 	
 	
+	public boolean isToString1() {
+		return toString1;
+	}
+	public void setToString1(boolean toString1) {
+		this.toString1 = toString1;
+	}
+	public Employee(int id) {
+		super();
+		this.id = id;
+	}
 	public Employee(String email, String password) {
 		super();
 		this.email = email;
@@ -21,9 +30,14 @@ public class Employee implements Serializable{
 		super();
 		this.email = email;
 	}
-	public Employee(int id) {
-		super();
-		this.id = id;
+
+
+	@Override
+	public String toString() {
+		return "Employee id = " + id + " " + (firstName != null ? "firstName = " + firstName + " " : "")
+				+ (lastName != null ? "lastName = " + lastName + ", " : "")
+				+ (email != null ? "email = " + email + " " : "")
+				+ (password != null ? "password = " + password + " " : "");
 	}
 	@Override
 	public int hashCode() {
@@ -34,10 +48,6 @@ public class Employee implements Serializable{
 		result = prime * result + id;
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((role == null) ? 0 : role.hashCode());
-		long temp;
-		temp = Double.doubleToLongBits(salary);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
 	@Override
@@ -71,34 +81,26 @@ public class Employee implements Serializable{
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
-		if (role == null) {
-			if (other.role != null)
-				return false;
-		} else if (!role.equals(other.role))
-			return false;
-		if (Double.doubleToLongBits(salary) != Double.doubleToLongBits(other.salary))
-			return false;
 		return true;
-	}
-	@Override
-	public String toString() {
-		return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", role=" + role
-				+ ", salary=" + salary + ", email=" + email + ", password=" + password + "]";
-	}
-	public Employee(int id, String firstName, String lastName, String role, double salary, String email,
-			String password) {
-		super();
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.role = role;
-		this.salary = salary;
-		this.email = email;
-		this.password = password;
 	}
 	public Employee() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	public Employee(int id, String firstName, String lastName, String email, String password) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+	}
+	public Employee(int id, String firstName, String lastName, String email) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
 	}
 	public int getId() {
 		return id;
@@ -118,18 +120,6 @@ public class Employee implements Serializable{
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public String getRole() {
-		return role;
-	}
-	public void setRole(String role) {
-		this.role = role;
-	}
-	public double getSalary() {
-		return salary;
-	}
-	public void setSalary(double salary) {
-		this.salary = salary;
-	}
 	public String getEmail() {
 		return email;
 	}
@@ -142,5 +132,7 @@ public class Employee implements Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	
 	
 }

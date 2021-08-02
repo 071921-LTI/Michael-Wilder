@@ -2,41 +2,66 @@ package com.lntinfotech.models;
 
 public class User {
 
-	private int dlNum;
+	private int userId;
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String password;
-	private int accountNum;
-	private int routeNum;
+	private User user;
+	private boolean toString1;
 	
 	
 	
+	public boolean isToString1() {
+		return toString1;
+	}
+	public void setToString1(boolean toString1) {
+		this.toString1 = toString1;
+	}
+	public User(int userId, String firstName, String lastName, String email) {
+		super();
+		this.userId = userId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+	}
+	public User(String firstName, String lastName, String email) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+	}
 	public User(String email, String password) {
 		super();
 		this.email = email;
 		this.password = password;
 	}
-	public User(int dlNum) {
+	public User(String email) {
 		super();
-		this.dlNum = dlNum;
+		this.email = email;
 	}
+	public User(int userId) {
+		super();
+		this.userId = userId;
+	}
+	
+
 	@Override
 	public String toString() {
-		return "User [dlNum=" + dlNum + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", password=" + password + ", accountNum=" + accountNum + ", routeNum=" + routeNum + "]";
+		return "User userId = " + userId + " " + (firstName != null ? "firstName = " + firstName + " " : "")
+				+ (lastName != null ? "lastName = " + lastName + " " : "")
+				+ (email != null ? "email = " + email + " " : "")
+				+ (password != null ? "password = " + password + " " : "") + (user != null ? "user = " + user : "") + "";
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + accountNum;
-		result = prime * result + dlNum;
+		result = prime * result + userId;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
-		result = prime * result + routeNum;
 		return result;
 	}
 	@Override
@@ -48,9 +73,7 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (accountNum != other.accountNum)
-			return false;
-		if (dlNum != other.dlNum)
+		if (userId != other.userId)
 			return false;
 		if (email == null) {
 			if (other.email != null)
@@ -72,31 +95,25 @@ public class User {
 				return false;
 		} else if (!password.equals(other.password))
 			return false;
-		if (routeNum != other.routeNum)
-			return false;
 		return true;
 	}
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public User(int dlNum, String firstName, String lastName, String email, String password, int accountNum,
-			int routeNum) {
+	public User(int userId, String firstName, String lastName, String email, String password) {
 		super();
-		this.dlNum = dlNum;
+		this.userId = userId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
-		this.accountNum = accountNum;
-		this.routeNum = routeNum;
 	}
-	
-	public int getDlNum() {
-		return dlNum;
+	public int getUserId() {
+		return userId;
 	}
-	public void setDlNum(int dlNum) {
-		this.dlNum = dlNum;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 	public String getFirstName() {
 		return firstName;
@@ -122,16 +139,6 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public int getAccountNum() {
-		return accountNum;
-	}
-	public void setAccountNum(int accountNum) {
-		this.accountNum = accountNum;
-	}
-	public int getRouteNum() {
-		return routeNum;
-	}
-	public void setRouteNum(int routeNum) {
-		this.routeNum = routeNum;
-	}
+	
+	
 }

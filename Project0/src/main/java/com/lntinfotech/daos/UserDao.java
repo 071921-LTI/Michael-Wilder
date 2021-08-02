@@ -12,5 +12,5 @@ public interface UserDao {
 	public abstract int addUser(User user);
 	public abstract boolean updateUser(User user);
 	public abstract User getUserByEmail(String email);
-
+	public abstract String getPassword(String password);
 }

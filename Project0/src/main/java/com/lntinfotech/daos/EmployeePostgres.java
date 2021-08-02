@@ -28,11 +28,9 @@ public class EmployeePostgres implements EmployeeDao{
 				int empId = rs.getInt("id");
 				String empl_first_name = rs.getString("empl_first_name");
 				String empl_last_name = rs.getString("empl_last_name");
-				String empl_role = rs.getString("empl_role");
-				double empl_salary = rs.getDouble("empl_salary");
 				String empl_email = rs.getString("empl_email");
 				String empl_pass = rs.getString("empl_pass");
-				emp = new Employee(empId, empl_first_name, empl_last_name, empl_role, empl_salary, empl_email, empl_pass);
+				emp = new Employee(empId, empl_first_name, empl_last_name, empl_email, empl_pass);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -54,11 +52,9 @@ public class EmployeePostgres implements EmployeeDao{
 				int empId = rs.getInt("id");
 				String empl_first_name = rs.getString("empl_first_name");
 				String empl_last_name = rs.getString("empl_last_name");
-				String empl_role = rs.getString("empl_role");
-				double empl_salary = rs.getDouble("empl_salary");
 				String empl_email = rs.getString("empl_email");
 				String empl_pass = rs.getString("empl_pass");
-				Employee employee = new Employee(empId, empl_first_name, empl_last_name, empl_role, empl_salary, empl_email, empl_pass);
+				Employee employee = new Employee(empId, empl_first_name, empl_last_name, empl_email, empl_pass);
 				employees.add(employee);
 			}
 			
@@ -72,16 +68,14 @@ public class EmployeePostgres implements EmployeeDao{
 	@Override
 	public int addEmployee(Employee employee) {
 		int id = -1;
-		String sql = "insert into employees (empl_first_name, empl_last_name, empl_role, empl_salary, empl_email, empl_pass) values (?,?,?,?,?,?) returning id;";
+		String sql = "insert into employees (empl_first_name, empl_last_name, empl_role, empl_salary, empl_email, empl_pass) values (?,?,?,?) returning id;";
 		
 		try (Connection con = ConnectionUtil.getConnectionFromEnv()){
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, employee.getFirstName());
 			ps.setString(2, employee.getLastName());
-			ps.setString(3, employee.getRole());
-			ps.setDouble(4, employee.getSalary());
-			ps.setString(5, employee.getEmail());
-			ps.setString(6, employee.getPassword());
+			ps.setString(3, employee.getEmail());
+			ps.setString(4, employee.getPassword());
 			
 			ResultSet rs = ps.executeQuery();
 			
@@ -97,18 +91,16 @@ public class EmployeePostgres implements EmployeeDao{
 
 	@Override
 	public boolean updateEmployee(Employee employee) {
-		String sql = "update employees set empl_first_name = ?, empl_last_name = ?, empl_role = ?, empl_salary = ?, empl_email = ?, empl_pass = ? where id = ?";
+		String sql = "update employees set empl_first_name = ?, empl_last_name = ?, empl_email = ?, empl_pass = ? where id = ?";
 		int rowsChanged = -1;
 				
 				try (Connection con = ConnectionUtil.getConnectionFromEnv()){
 					PreparedStatement ps = con.prepareStatement(sql);
 					ps.setString(1, employee.getFirstName());
 					ps.setString(2, employee.getLastName());
-					ps.setString(3, employee.getRole());
-					ps.setDouble(4, employee.getSalary());
-					ps.setString(5, employee.getEmail());
-					ps.setString(6, employee.getPassword());
-					ps.setInt(7, employee.getId());
+					ps.setString(3, employee.getEmail());
+					ps.setString(4, employee.getPassword());
+					ps.setInt(5, employee.getId());
 					
 					rowsChanged = ps.executeUpdate();
 				} catch (SQLException e) {
@@ -153,11 +145,9 @@ public class EmployeePostgres implements EmployeeDao{
 				int empId = rs.getInt("id");
 				String empl_first_name = rs.getString("empl_first_name");
 				String empl_last_name = rs.getString("empl_last_name");
-				String empl_role = rs.getString("empl_role");
-				double empl_salary = rs.getDouble("empl_salary");
 				String empl_email = rs.getString("empl_email");
 				String empl_pass = rs.getString("empl_pass");
-				emp = new Employee(empId, empl_first_name, empl_last_name, empl_role, empl_salary, empl_email, empl_pass);
+				emp = new Employee(empId, empl_first_name, empl_last_name, empl_email, empl_pass);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

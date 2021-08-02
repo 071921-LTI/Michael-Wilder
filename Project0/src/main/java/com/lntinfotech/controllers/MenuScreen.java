@@ -8,12 +8,15 @@ import com.lntinfotech.models.Employee;
 import com.lntinfotech.models.User;
 import com.lntinfotech.services.AuthService;
 import com.lntinfotech.services.AuthServiceImpl;
+import com.lntinfotech.services.EmployeeService;
+import com.lntinfotech.services.EmployeeServiceImpl;
 import com.lntinfotech.services.UserService;
 import com.lntinfotech.services.UserServiceImpl;
 
 public class MenuScreen {
 	static Scanner sc = new Scanner(System.in);
 	static UserService us = new UserServiceImpl();
+	static EmployeeService es = new EmployeeServiceImpl();
 	static AuthService as = new AuthServiceImpl();
 	static String input;
 	public static void display() {
@@ -31,26 +34,27 @@ public class MenuScreen {
 				String email = sc.nextLine();
 
 				try {
-					User user = us.getUser(email);
+					Employee emp = es.getEmployeeByEmail(email);
 					System.out.println("Enter password:");
 					String password = sc.nextLine();
 					Employee toBeChecked = new Employee(email, password);
 //					if(as.login(toBeChecked)) {
 //						// do something
 //					}
-					if(as.login(toBeChecked)) {
+					if(es.login(toBeChecked)) {
 					System.out.println("Successfully logged in!");
 					employeeView();
 					//input = "3";
 					} else {
 						System.out.println("Wrong credentials");
 					}
-				} catch (UserNotFoundException e) {
-					System.out.println("User was not found.");
 				} catch (AuthException e) {
 					System.out.println("Wrong credentials");
 				} catch (NullPointerException e) {
 					System.out.println("Wrong credentials");
+				} catch (UserNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				break;
 			case "C":
@@ -58,14 +62,14 @@ public class MenuScreen {
 				String email1 = sc.nextLine();
 
 				try {
-					User user = us.getUser(email1);
+					User user = us.getUserByEmail(email1);
 					System.out.println("Enter password:");
 					String password = sc.nextLine();
 					User toBeChecked = new User(email1, password);
 //					if(as.login(toBeChecked)) {
 //						// do something
 //					}
-					if(as.login(toBeChecked)) {
+					if(us.login(toBeChecked)) {
 					System.out.println("Successfully logged in!");
 					userView();
 					//input = "3";
@@ -92,24 +96,17 @@ public class MenuScreen {
 			System.out.println("Enter Your Last Name: ");
 			String lastName = sc.nextLine();
 			
-			// Do stuff here
 			System.out.println("Enter a email address: ");
 			String emailNew = sc.nextLine();
-			// Ideally do some validation to check that username doesn't exist
+			
 			System.out.println("Enter password: ");
 			String passwordNew = sc.nextLine();
 			
-			System.out.println("Enter Credit Card Type: ");
-			int accountNum = sc.nextInt();
-			
-			System.out.println("Enter Credit Card Number: ");
-			int routeNum = sc.nextInt();
-			
-			if(us.addUser(new User(dlNum, firstName, lastName, emailNew, passwordNew, accountNum, routeNum))) {
-				System.out.println("Register successful!");
-			}else {
-				System.out.println("Unable to accomplish operation.");
-			}
+//			if(us.addUser(new User(dlNum, firstName, lastName, emailNew, passwordNew))) {
+//				System.out.println("Register successful!");
+//			}else {
+//				System.out.println("Unable to accomplish operation.");
+//			}
 			break;
 		case "3": System.out.println("Goodbye");
 		break;
