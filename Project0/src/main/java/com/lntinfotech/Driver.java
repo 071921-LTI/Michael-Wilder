@@ -20,10 +20,12 @@ public class Driver {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		MenuScreen.display();
-//		EmployeeDao ed = new EmployeePostgres();
-//		UserDao ud = new UserPostgres();
+//		MenuScreen.display();
 //		OfferDao od = new OfferPostgres();
+//		System.out.println(od.offerAmount(1));
+		EmployeeDao ed = new EmployeePostgres();
+		System.out.println(ed.getEmployeeByEmail("mm.com"));
+//		UserDao ud = new UserPostgres();
 //		VehicleDao vd = new VehiclePostgres();
 //		System.out.println(od.getOffersByVIN("KL4CJESBXFB218315"));
 //		System.out.println(vd.getVehiclesByVIN("WBAYB6C58DC544318"));
@@ -139,7 +141,7 @@ public class Driver {
 //		e.setId(1);
 //		
 //		System.out.println(ed.updateEmployee(e));
-		
+		//System.out.println();
 	}
 
 }

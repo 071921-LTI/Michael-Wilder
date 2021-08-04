@@ -16,6 +16,7 @@ public class Vehicles{
 	private int lenRem;
 	private User userId;
 	private Employee emplId;
+	private String wp;
 //	private boolean toString1;
 //	private int userId1;
 //	private int emplId1;
@@ -37,6 +38,14 @@ public class Vehicles{
 		this.make = make;
 		this.model = model;
 		
+	}
+
+	public String getWp() {
+		return wp;
+	}
+
+	public void setWp(String wp) {
+		this.wp = wp;
 	}
 
 	public Vehicles(boolean offers) {
@@ -98,17 +107,60 @@ public class Vehicles{
 
 
 	
+	public Vehicles(int year, String make, String model, double remBal, int lenRem) {
+		super();
+		this.year = year;
+		this.make = make;
+		this.model = model;
+		this.remBal = remBal;
+		this.lenRem = lenRem;
+	}
+
+	public Vehicles(String vin, double remBal, int lenRem, User userId, Employee emplId) {
+		super();
+		this.vin = vin;
+		this.remBal = remBal;
+		this.lenRem = lenRem;
+		this.userId = userId;
+		this.emplId = emplId;
+	}
+
+	public Vehicles(String vin, double remBal, int lenRem, User userId, String wp) {
+		super();
+		this.vin = vin;
+		this.remBal = remBal;
+		this.lenRem = lenRem;
+		this.userId = userId;
+
+		this.wp = wp;
+	}
+
 	@Override
 	public String toString() {
-		return "Vehicles " + (vin != null ? "vin = " + vin + " " : "") + "year = " + year + " "
+		return "Vehicles " + (vin != null ? "vin = " + vin + " " : "") + (year != 0 ? "year = " + year + " " : "") 
 				+ (make != null ? "make = " + make + " " : "") + (model != null ? "model = " + model + " " : "")
-				+ "price = " + price + " offers = " + offers + (remBal != 0 ? "remBal = " + remBal + " " : "") + (lenRem != 0 ? "lenRem = " + lenRem + " " : "")
-				+ (userId != null ? " userId = " + userId + " " : "") + (emplId != null ? "emplId = " + emplId : "") + "";
+				+ (price != 0 ? "price = " + price + " " :"") + (offers != false ? "offers = " + offers + " " : "")+ (remBal != 0 ? "remBal = " + remBal + " " : "") + (lenRem != 0 ? "lenRem = " + lenRem + " " : "")
+				+ (userId != null ? " userId = " + userId + " " : "") + (emplId != null ? "emplId = " + emplId : "") + (wp != null ? "weekly payment " + wp : " ") + "";
 	}
 
 	public String getVin() {
 		return vin;
 	}
+	public Vehicles(String vin, double remBal, User userId, Employee emplId) {
+		super();
+		this.vin = vin;
+		this.remBal = remBal;
+		this.userId = userId;
+		this.emplId = emplId;
+	}
+	public Vehicles(double remBal, User userId, Employee emplId, String vin) {
+		super();
+		this.vin = vin;
+		this.remBal = remBal;
+		this.userId = userId;
+		this.emplId = emplId;
+	}
+
 	public void setVin(String vin) {
 		this.vin = vin;
 	}
@@ -166,6 +218,8 @@ public class Vehicles{
 	public void setEmplId(Employee emplId) {
 		this.emplId = emplId;
 	}
+
+	
 
 
 

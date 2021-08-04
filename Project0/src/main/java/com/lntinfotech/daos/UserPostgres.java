@@ -143,7 +143,54 @@ public class UserPostgres implements UserDao {
 	@Override
 	public String getPassword(String password) {
 		// TODO Auto-generated method stub
-		return null;
+				return null;
+		
+	}
+
+	@Override
+	public User getIdByEmail(String email) {
+		String sql = "select user_id from users where email = ?";
+		User user = null;
+		try(Connection con = ConnectionUtil.getConnectionFromEnv()){
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, email); // 1 refers to first ? to parameterize
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				int id1 = rs.getInt("user_Id");
+				
+				String user_email = rs.getString("user_email");
+				
+				user = new User(id1, user_email);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return user;
+	}
+
+	@Override
+	public int getIdByEmail1(String email) {
+		int id = -1;
+		String sql = "Select * from users where user_email = ?;";
+		
+		try (Connection con = ConnectionUtil.getConnectionFromEnv()){
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, email);
+			
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				id = rs.getInt("user_id");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
 	}
 
 

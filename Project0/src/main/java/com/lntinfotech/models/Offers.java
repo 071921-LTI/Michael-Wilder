@@ -10,6 +10,10 @@ public class Offers {
 	
 	
 	
+	public Offers(double offer) {
+		super();
+		this.offer = offer;
+	}
 	public Offers(String status, Vehicles vin) {
 		super();
 		this.status = status;
@@ -49,6 +53,22 @@ public class Offers {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Offers(String status, double offer, Vehicles vin, User userId) {
+		super();
+		this.status = status;
+		this.offer = offer;
+		this.vin = vin;
+		this.userId = userId;
+	}
+	
+	
+	
+
+	public Offers(int id, double offer) {
+		super();
+		this.id = id;
+		this.offer = offer;
+	}
 	@Override
 	public String toString() {
 		return "Offers id = " + id + ", " + (status != null ? "status = " + status + ", " : "") + "offer = " + offer + ", "

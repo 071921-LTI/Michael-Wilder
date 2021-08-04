@@ -116,6 +116,11 @@ public class User {
 		this.lastName = lastName;
 		this.email = email;
 	}
+	public User(int userId, String email) {
+		super();
+		this.userId = userId;
+		this.email = email;
+	}
 	public int getUserId() {
 		return userId;
 	}

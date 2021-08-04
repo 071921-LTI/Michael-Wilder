@@ -3,13 +3,16 @@ package com.lntinfotech.controllers;
 import java.util.List;
 import java.util.Scanner;
 
+import com.lntinfotech.daos.OfferDao;
+import com.lntinfotech.daos.OfferPostgres;
+import com.lntinfotech.daos.UserDao;
+import com.lntinfotech.daos.UserPostgres;
 import com.lntinfotech.exceptions.AuthException;
 import com.lntinfotech.exceptions.UserNotFoundException;
 import com.lntinfotech.models.Employee;
+import com.lntinfotech.models.Offers;
 import com.lntinfotech.models.User;
 import com.lntinfotech.models.Vehicles;
-import com.lntinfotech.services.AuthService;
-import com.lntinfotech.services.AuthServiceImpl;
 import com.lntinfotech.services.EmployeeService;
 import com.lntinfotech.services.EmployeeServiceImpl;
 import com.lntinfotech.services.UserService;
@@ -22,8 +25,12 @@ public class MenuScreen {
 	static UserService us = new UserServiceImpl();
 	static EmployeeService es = new EmployeeServiceImpl();
 	static VehicleService vs = new VehicleServiceImpl();
-	static AuthService as = new AuthServiceImpl();
+
+	static UserDao ud = new UserPostgres();
+	static OfferDao od = new OfferPostgres();
 	static String input;
+	static int userI;
+	static int emp;
 	public static void display() {
 		 
 		do {
@@ -46,6 +53,7 @@ public class MenuScreen {
 
 					if(es.login(toBeChecked)) {
 					System.out.println("Successfully logged in!");
+					emp = es.getIdByEmail1(email);
 					employeeView();
 					//input = "3";
 					} else {
@@ -74,8 +82,10 @@ public class MenuScreen {
 //					}
 					if(us.login(toBeChecked)) {
 					System.out.println("Successfully logged in!");
+					userI = us.getIdByEmail1(email1);
 					userView();
-					//input = "3";
+				    
+				    
 					} else {
 						System.out.println("Wrong credentials");
 					}
@@ -86,7 +96,9 @@ public class MenuScreen {
 				} catch (NullPointerException e) {
 					System.out.println("Wrong credentials");
 				}
+				input = "3";
 				break;
+				
 			}
 			
 		case "2":
@@ -117,48 +129,131 @@ public class MenuScreen {
 		} while(!input.equals("3"));
 	}
 	public static void userView() {
-
+		
 		do {
-			System.out.println("Enter: \n1 to View Available Vehicles\n2 to View Previous Purchases\n3 to View Remaining Payments\4 to Make an Offer");
+			System.out.println("Enter: \n1 to View Available Vehicles\n2 to View Previous Purchases\n3 to View Remaining Payments\n4 to Make an Offer\n5 to logout");
 			input = sc.nextLine();
 			switch(input) {
 			case "1": 
-				List<Vehicles> off = vs.getVehicle();
+				List<Vehicles> off = vs.getAvailableVehicle();
 				for(Vehicles u : off) {
 					System.out.println(u);
 				}
 			break;
-			case "2": System.out.println();
-			break;
-			case "3": System.out.println();
-			break;
-			case "4": System.out.println();
-			break;
+			case "2": 
+				List<Vehicles> gui = vs.getVehiclesByUser(userI);
+				System.out.println(userI);
+				for(Vehicles u : gui) {
+					System.out.println(u);
+				}
 			
+			break;
+			case "3": 
+				System.out.println(vs.getRemainingWeeklyPayments(userI));
+			break;
+			case "4": 
+					
+				System.out.println("Enter the Vehicles Vin: ");
+				String vin = sc.nextLine();
+				
+				System.out.println("Enter Your Offer Amount: ");
+				double offer = sc.nextDouble();
+						
+				us.makeOffer(new Offers("Pending", offer, (new Vehicles(vin)), (new User(userI))));
+				vs.updateVehicleOffer((new Vehicles(vin)));
+				System.out.println("Your offer was submitted");
+				input = "3";
+				break;
+			case "5" :
+				int exit = 5;
+				System.out.println("GoodBye");
+				System.exit(exit);
+				break;
+			default:
+				System.out.println("Invalid input");
+		
 			}
-
-		} while(input.equals(""));
+			
+		} while((!input.equals("3")));
 	}
 	
 	public static void employeeView() {
 
 		do {
-			System.out.println("Enter: \n1 to View Available Vehicles\n2 to View All Payments\n3 to Add an Vehicle\n4 to Remove a Vehicle\n5 to Accept or Reject an Offer");
+			System.out.println("Enter: \n1 to View All Vehicles\n2 to View All Payments\n3 to Add an Vehicle\n4 to Remove a Vehicle\n5 to Accept or Reject an Offer\n6 to logout");
 			input = sc.nextLine();
 			switch(input) {
-			case "1": System.out.println();
+			case "1": 
+				List<Vehicles> gv = vs.getVehicle();
+				for(Vehicles u : gv) {
+					System.out.println(u);
+				}
+
 			break;
-			case "2": System.out.println();
+			case "2": 
+				
+				List<Vehicles> gap = es.getAllPayments();
+				for(Vehicles u : gap) {
+					System.out.println(u);
+				}
+
 			break;
-			case "3": System.out.println();
+			case "3": 
+
+				System.out.println("Enter Vehicles VIN: ");
+				String vin = sc.nextLine();
+				System.out.println("Enter Vehicles Year: ");
+				int year = sc.nextInt();
+				sc.nextLine();
+				System.out.println("Enter Vehicles Make: ");
+				String make = sc.nextLine();
+
+				System.out.println("Enter Vehicles Model: ");
+				String model = sc.nextLine();
+				sc.nextLine();
+				System.out.println("Enter Vehicles Price: ");
+				double price = sc.nextDouble();
+				es.addVehicles(new Vehicles(vin, year, make, model,price));
+				System.out.println();
 			break;
-			case "4": System.out.println();
+			case "4": sc.nextLine();
+				System.out.println("Enter the VIN of the Vehicle you want to Remove");
+				String vin1 = sc.nextLine();
+				es.deleteVehicles(vin1);
 			break;
-			case "5": System.out.println();
+			case "5": 
+
+				System.out.println("Do you wish to accept or reject an offer");
+				String aor = sc.nextLine();
+				System.out.println(aor);
+				if(aor.equals("accept")) {
+
+					System.out.println("Enter the id of the offer you want to accept");
+					int id = sc.nextInt();
+					double am = od.offerAmount(id);
+					int uid = od.userId(id);
+					String vini = od.vinById(id);
+//					System.out.println(es.acceptedOffer((new Offers(id)), (new Vehicles ((am), (new User(uid)), (new Employee(emp)), vini))));
+
+					es.acceptedOffer((new Offers(id)), (new Vehicles(am, (new User(uid)), (new Employee(emp)), vini)));
+					es.rejectOffer(vini, am);
+				} else if (aor == "reject") {
+					System.out.println("Enter the id of the offer you want to reject");
+					
+				} else
+					System.out.println("invalid input");
+				
+				
 			break;
-			
+			case "6": System.out.println();
+			int exit = 6;
+			System.out.println("GoodBye");
+			System.exit(exit);
+			break;
+			default:
+				System.out.println("Invalid input");
 			}
 
-		} while(input.equals(""));
+		} while(!input.equals("3"));
 	}
 }

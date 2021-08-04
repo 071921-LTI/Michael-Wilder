@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import com.lntinfotech.models.Vehicles;
 import com.lntinfotech.util.ConnectionUtil;
 
 public class VehiclePostgres implements VehicleDao {
-
+	private static DecimalFormat df2 = new DecimalFormat("#.##");
 	
 
 	@Override
@@ -415,6 +416,245 @@ public class VehiclePostgres implements VehicleDao {
 		}
 		return vehicles;
 	}
+
+	@Override
+	public List<Vehicles> getAvailableVehicle() {
+		List<Vehicles> vehicles = new ArrayList<>();
+//		String sql = "select cars.vin \"cars.vin\", cars.car_year \"cars.car_year\", cars.make \"cars.make\", cars.model \"cars.model\", cars.price \"cars.price\", cars.offers \"cars.offers\", cars.remaining_bal \"cars.remaining_bal\", cars.length_con \"cars.length_con\", cars.user_id \"cars.user_id\", users.user_first_name \"users.user_first_name\", users.user_last_name \"users.user_last_name\", users.user_email \"users.user_email\", cars.empl_id \"cars.empl_id\", employees.empl_first_name \"employees.empl_first_name\", employees.empl_last_name \"employees.empl_last_name\", employees.empl_email \"employees.empl_email\" from cars join users on cars.user_id = users.user_id join employees on cars.empl_id = employees.id";
+
+		String sql = "select cars.vin \"cars.vin\", cars.car_year \"cars.car_year\", cars.make \"cars.make\", cars.model \"cars.model\", cars.price \"cars.price\", cars.offers \"cars.offers\", cars.remaining_bal \"cars.remaining_bal\", cars.length_con \"cars.length_con\", cars.user_id \"cars.user_id\", cars.empl_id \"cars.empl_id\" from cars where offers = false";
+		try(Connection con = ConnectionUtil.getConnectionFromEnv()){
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+
+				String vin1 = rs.getString("cars.vin");
+				int year1 = rs.getInt("cars.car_year");
+				String make = rs.getString("cars.make");
+				String model = rs.getString("cars.model");
+				double price = rs.getDouble("cars.price");
+				boolean offers = rs.getBoolean("cars.offers");
+				double remBal = rs.getDouble("cars.remaining_bal");
+				int lenRem = rs.getInt("cars.length_con");
+//				User u = new User(rs.getInt("offers.user_id"), rs.getString("users.user_first_name"), rs.getString("users.user_last_name"), rs.getString("users.user_email"));
+				User u = new User(rs.getInt("cars.user_id"));
+//				Employee e = new Employee(rs.getInt("cars.empl_id"), rs.getString("employees.empl_first_name"), rs.getString("employees.empl_last_name"), rs.getString("employees.empl_email"));
+				Employee e = new Employee(rs.getInt("cars.empl_id"));
+				
+				Vehicles vehicle = new Vehicles(vin1, year1, make, model, price, offers, remBal, lenRem, u, e);
+				vehicles.add(vehicle);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return vehicles;
+	}
+
+	@Override
+	public List<Vehicles> getVehiclesByEmail(String email) {
+		List<Vehicles> vehicles = new ArrayList<>();
+//		String sql = "select cars.vin \"cars.vin\", cars.car_year \"cars.car_year\", cars.make \"cars.make\", cars.model \"cars.model\", cars.price \"cars.price\", cars.offers \"cars.offers\", cars.remaining_bal \"cars.remaining_bal\", cars.length_con \"cars.length_con\", cars.user_id \"cars.user_id\", users.user_first_name \"users.user_first_name\", users.user_last_name \"users.user_last_name\", users.user_email \"users.user_email\", cars.empl_id \"cars.empl_id\", employees.empl_first_name \"employees.empl_first_name\", employees.empl_last_name \"employees.empl_last_name\", employees.empl_email \"employees.empl_email\" from cars join users on cars.user_id = users.user_id join employees on cars.empl_id = employees.id";
+
+		String sql = "select cars.vin \"cars.vin\", cars.car_year \"cars.car_year\", cars.make \"cars.make\", cars.model \"cars.model\", cars.price \"cars.price\", cars.offers \"cars.offers\", cars.remaining_bal \"cars.remaining_bal\", cars.length_con \"cars.length_con\", cars.user_id \"cars.user_id\", cars.empl_id \"cars.empl_id\" from cars where email = ?";
+		try(Connection con = ConnectionUtil.getConnectionFromEnv()){
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, email);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+
+				String vin1 = rs.getString("cars.vin");
+				int year1 = rs.getInt("cars.car_year");
+				String make = rs.getString("cars.make");
+				String model = rs.getString("cars.model");
+				double price = rs.getDouble("cars.price");
+				boolean offers = rs.getBoolean("cars.offers");
+				double remBal = rs.getDouble("cars.remaining_bal");
+				int lenRem = rs.getInt("cars.length_con");
+//				User u = new User(rs.getInt("offers.user_id"), rs.getString("users.user_first_name"), rs.getString("users.user_last_name"), rs.getString("users.user_email"));
+				User u = new User(rs.getInt("cars.user_id"));
+//				Employee e = new Employee(rs.getInt("cars.empl_id"), rs.getString("employees.empl_first_name"), rs.getString("employees.empl_last_name"), rs.getString("employees.empl_email"));
+				Employee e = new Employee(rs.getInt("cars.empl_id"));
+				
+				Vehicles vehicle = new Vehicles(vin1, year1, make, model, price, offers, remBal, lenRem, u, e);
+				vehicles.add(vehicle);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return vehicles;
+	}
+
+	@Override
+	public List<Vehicles> getRemaingingPayments(int userId) {
+		List<Vehicles> vehicles = new ArrayList<>();
+//		String sql = "select cars.vin \"cars.vin\", cars.car_year \"cars.car_year\", cars.make \"cars.make\", cars.model \"cars.model\", cars.price \"cars.price\", cars.offers \"cars.offers\", cars.remaining_bal \"cars.remaining_bal\", cars.length_con \"cars.length_con\", cars.user_id \"cars.user_id\", users.user_first_name \"users.user_first_name\", users.user_last_name \"users.user_last_name\", users.user_email \"users.user_email\", cars.empl_id \"cars.empl_id\", employees.empl_first_name \"employees.empl_first_name\", employees.empl_last_name \"employees.empl_last_name\", employees.empl_email \"employees.empl_email\" from cars join users on cars.user_id = users.user_id join employees on cars.empl_id = employees.id";
+
+		String sql = "select cars.car_year \"cars.car_year\", cars.make \"cars.make\", cars.model \"cars.model\", cars.remaining_bal \"cars.remaining_bal\", cars.length_con \"cars.length_con\" from cars where user_id = ?";
+		try(Connection con = ConnectionUtil.getConnectionFromEnv()){
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, userId);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+
+
+				int year1 = rs.getInt("cars.car_year");
+				String make = rs.getString("cars.make");
+				String model = rs.getString("cars.model");
+				double remBal = rs.getDouble("cars.remaining_bal");
+				int lenRem = rs.getInt("cars.length_con");
+
+				
+				Vehicles vehicle = new Vehicles(year1, make, model, remBal, lenRem);
+				vehicles.add(vehicle);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return vehicles;
+	}
+
+	@Override
+	public double getRemainingB(int userId) {
+		String sql = "Select remaining_bal from cars where user_id = ?;";
+		double bal = -1;
+		
+		try (Connection con = ConnectionUtil.getConnectionFromEnv()){
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, userId);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				bal = rs.getDouble("remaining_bal");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return bal;
+	}
+
+	@Override
+	public int getRemainingWeeks(int userId) {
+		String sql = "Select length_con from cars where user_id = ?;";
+		int week = -1;
+		
+		try (Connection con = ConnectionUtil.getConnectionFromEnv()){
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, userId);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				week = rs.getInt("length_con");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return week;
+	}
+
+	@Override
+	public boolean updateVehicleOffer(Vehicles vehicle) {
+		String sql = "update cars set offers = true where vin = ?";
+		int rowsChanged = -1;
+				
+				try (Connection con = ConnectionUtil.getConnectionFromEnv()){
+					PreparedStatement ps = con.prepareStatement(sql);
+							
+					ps.setString(1, vehicle.getVin());
+					
+					rowsChanged = ps.executeUpdate();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if(rowsChanged >0) {
+					return true;
+				} 
+				return false;
+	}
+
+	@Override
+	public int getIdByEmail1(String email) {
+		int id = -1;
+		String sql = "Select * from employees where empl_email = ?;";
+		
+		try (Connection con = ConnectionUtil.getConnectionFromEnv()){
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, email);
+			
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				id = rs.getInt("id");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
+	}
+
+	@Override
+	public List<Vehicles> getAllPayments() {
+		List<Vehicles> vehicles = new ArrayList<>();
+		String sql = "select cars.vin \"cars.vin\", cars.remaining_bal \"cars.remaining_bal\", cars.length_con \"cars.length_con\", cars.user_id \"cars.user_id\" from cars where cars.length_con > 0";
+		try(Connection con = ConnectionUtil.getConnectionFromEnv()){
+			PreparedStatement ps = con.prepareStatement(sql);
+
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+
+				String vin1 = rs.getString("cars.vin");
+				
+				double remBal = rs.getDouble("cars.remaining_bal");
+				int lenRem = rs.getInt("cars.length_con");
+				User u = new User(rs.getInt("cars.user_id"));
+
+				String wp = df2.format(remBal/lenRem);
+				Vehicles vehicle = new Vehicles(vin1, remBal, lenRem, u, wp);
+				vehicles.add(vehicle);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return vehicles;
+	}
+
+//	@Override
+//	public boolean acceptedVehicles(Vehicles vehicle) {
+//		String sql = "update cars set offers = ?, remaining_bal = ?, length_con = ?, user_id = ?, empl_id =? where vin = ?";
+//		int rowsChanged = -1;
+//				
+//				try (Connection con = ConnectionUtil.getConnectionFromEnv()){
+//					PreparedStatement ps = con.prepareStatement(sql);
+//					ps.setBoolean(1, false);
+//					ps.setDouble(2, vehicle.getRemBal());
+//					ps.setInt(3, vehicle.getLenRem());
+//					ps.setInt(4, vehicle.getUserId().getUserId());
+//					ps.setInt(5, vehicle.getEmplId().getId());
+//					ps.setString(6, vehicle.getVin());
+//					
+//					rowsChanged = ps.executeUpdate();
+//				} catch (SQLException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				
+//				if(rowsChanged >0) {
+//					return true;
+//				} 
+//				return false;
+//	}
 
 	
 
