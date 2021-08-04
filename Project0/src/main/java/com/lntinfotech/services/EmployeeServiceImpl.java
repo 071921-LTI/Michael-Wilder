@@ -55,6 +55,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public boolean rejectOffer(String vin, double offer) {
 		return od.rejectOffer(vin, offer);
 	}
+
+	@Override
+	public boolean rejectOfferById(int id) {
+		return od.rejectOfferById(id);
+	}
+
+	@Override
+	public List<Offers> getAllOffers() {
+		return od.getAllOffers();
+	}
 	
 	
 

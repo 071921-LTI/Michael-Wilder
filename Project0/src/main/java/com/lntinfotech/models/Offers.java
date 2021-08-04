@@ -7,8 +7,7 @@ public class Offers {
 	private double offer;
 	private Vehicles vin;
 	private User userId;
-	
-	
+		
 	
 	public Offers(double offer) {
 		super();
@@ -68,6 +67,13 @@ public class Offers {
 		super();
 		this.id = id;
 		this.offer = offer;
+	}
+	public Offers(int id, String status, double offer, User userId) {
+		super();
+		this.status = status;
+		this.offer = offer;
+		this.vin = vin;
+		this.userId = userId;
 	}
 	@Override
 	public String toString() {
@@ -147,6 +153,7 @@ public class Offers {
 	public void setUserId(User userId) {
 		this.userId = userId;
 	}
+
 
 	
 }

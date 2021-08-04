@@ -16,4 +16,6 @@ public interface OfferDao {
 	public abstract int userId (int id);
 	public abstract String vinById(int id);
 	public abstract boolean rejectOffer(String vin, double offer);
+	public abstract boolean rejectOfferById(int id);
+	public abstract List<Offers> getAllOffers ();
 }

@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lntinfotech.models.Employee;
 import com.lntinfotech.models.Offers;
 import com.lntinfotech.models.User;
 import com.lntinfotech.models.Vehicles;
@@ -289,6 +291,58 @@ public class OfferPostgres implements OfferDao{
 			return true;
 		} 
 		return false;
+	}
+
+
+	@Override
+	public boolean rejectOfferById(int id) {
+		String sql = "update offers set status = ? where id = ? ";
+
+		int rowsChanged = -1;
+
+		try(Connection con = ConnectionUtil.getConnectionFromEnv()){
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, "Rejected");
+			ps.setInt(2, id);
+			rowsChanged = ps.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if(rowsChanged > 0) {
+			return true;
+		} 
+		return false;
+	}
+
+
+	@Override
+	public List<Offers> getAllOffers() {
+List<Offers> offered = new ArrayList<>();
+		
+		try (Connection con = ConnectionUtil.getConnectionFromEnv()){
+			String sql = "select * from offers order by status";
+			Statement s = con.createStatement();
+			ResultSet rs = s.executeQuery(sql);
+			
+			while(rs.next()) {
+				int id = rs.getInt("id");
+				String status = rs.getString("status");
+				double offer = rs.getDouble("offer");
+				User u = new User(rs.getInt("user_id"));
+
+				Offers offers = new Offers(id, status, offer, u);
+				offered.add(offers);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return offered;
 	}
 	
 	

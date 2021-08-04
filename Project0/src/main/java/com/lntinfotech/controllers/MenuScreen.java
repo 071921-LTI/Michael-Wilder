@@ -1,13 +1,18 @@
 package com.lntinfotech.controllers;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.lntinfotech.daos.OfferDao;
 import com.lntinfotech.daos.OfferPostgres;
 import com.lntinfotech.daos.UserDao;
 import com.lntinfotech.daos.UserPostgres;
 import com.lntinfotech.exceptions.AuthException;
+import com.lntinfotech.exceptions.InvalidInputException;
 import com.lntinfotech.exceptions.UserNotFoundException;
 import com.lntinfotech.models.Employee;
 import com.lntinfotech.models.Offers;
@@ -25,14 +30,14 @@ public class MenuScreen {
 	static UserService us = new UserServiceImpl();
 	static EmployeeService es = new EmployeeServiceImpl();
 	static VehicleService vs = new VehicleServiceImpl();
-
+	private static Logger log = LogManager.getRootLogger();
 	static UserDao ud = new UserPostgres();
 	static OfferDao od = new OfferPostgres();
 	static String input;
 	static int userI;
 	static int emp;
 	public static void display() {
-		 
+		  
 		do {
 		System.out.println("Enter: \n1 to login\n2 to register\n3 to exit");
 		input = sc.nextLine();
@@ -40,6 +45,7 @@ public class MenuScreen {
 		case "1":
 			System.out.println("Enter: \nE For Employee Login\nC For Customer Login\n3 to exit");
 			input = sc.nextLine();
+			do {
 			switch (input) {
 			case "E":
 				System.out.println("Enter email address:");
@@ -91,6 +97,7 @@ public class MenuScreen {
 					}
 				} catch (UserNotFoundException e) {
 					System.out.println("User was not found.");
+					log.warn("user not found");
 				} catch (AuthException e) {
 					System.out.println("Wrong credentials");
 				} catch (NullPointerException e) {
@@ -98,8 +105,15 @@ public class MenuScreen {
 				}
 				input = "3";
 				break;
-				
+			case "3" : System.out.println("Bye");
+			int exit = 3;
+			System.out.println("GoodBye");
+			System.exit(exit);
+			break;
+			default : 
+				System.out.println("invalid input");
 			}
+			}while(!input.equals("3"));
 			
 		case "2":
 			
@@ -110,7 +124,7 @@ public class MenuScreen {
 			String lastName = sc.nextLine();
 			
 			System.out.println("Enter a email address: ");
-			String emailNew = sc.nextLine();
+			String emailNew = sc.nextLine().toLowerCase();
 			
 			System.out.println("Enter password: ");
 			String passwordNew = sc.nextLine();
@@ -120,8 +134,12 @@ public class MenuScreen {
 			}else {
 				System.out.println("Unable to accomplish operation.");
 			}
+			
 			break;
-		case "3": System.out.println("Goodbye");
+		case "3": 
+			int exit = 3;
+			System.out.println("GoodBye");
+			System.exit(exit);
 		break;
 			default:
 				System.out.println("Invalid input");
@@ -154,7 +172,7 @@ public class MenuScreen {
 			case "4": 
 					
 				System.out.println("Enter the Vehicles Vin: ");
-				String vin = sc.nextLine();
+				String vin = sc.nextLine().toUpperCase();
 				
 				System.out.println("Enter Your Offer Amount: ");
 				double offer = sc.nextDouble();
@@ -174,13 +192,13 @@ public class MenuScreen {
 		
 			}
 			
-		} while((!input.equals("3")));
+		} while((!input.equals("5")));
 	}
 	
 	public static void employeeView() {
 
 		do {
-			System.out.println("Enter: \n1 to View All Vehicles\n2 to View All Payments\n3 to Add an Vehicle\n4 to Remove a Vehicle\n5 to Accept or Reject an Offer\n6 to logout");
+			System.out.println("Enter: \n1 to View All Vehicles\n2 to View All Payments\n3 to view all offers\n4 to Add an Vehicle\n5 to Remove a Vehicle\n6 to Accept or Reject an Offer\n7 to logout");
 			input = sc.nextLine();
 			switch(input) {
 			case "1": 
@@ -196,10 +214,17 @@ public class MenuScreen {
 				for(Vehicles u : gap) {
 					System.out.println(u);
 				}
+				break;
+			case "3": 
+				
+				List<Offers> off = es.getAllOffers();
+				for(Offers u : off) {
+					System.out.println(u);
+				}
 
 			break;
-			case "3": 
-
+			case "4": 
+				try {
 				System.out.println("Enter Vehicles VIN: ");
 				String vin = sc.nextLine();
 				System.out.println("Enter Vehicles Year: ");
@@ -209,19 +234,23 @@ public class MenuScreen {
 				String make = sc.nextLine();
 
 				System.out.println("Enter Vehicles Model: ");
-				String model = sc.nextLine();
+				String model = sc.nextLine(); 
 				sc.nextLine();
 				System.out.println("Enter Vehicles Price: ");
 				double price = sc.nextDouble();
 				es.addVehicles(new Vehicles(vin, year, make, model,price));
 				System.out.println();
+				}catch (InputMismatchException e) {
+					System.out.println("Please enter a vaild year");
+					log.warn("year wrong");
+				}
 			break;
-			case "4": sc.nextLine();
+			case "5": 
 				System.out.println("Enter the VIN of the Vehicle you want to Remove");
 				String vin1 = sc.nextLine();
 				es.deleteVehicles(vin1);
 			break;
-			case "5": 
+			case "6": 
 
 				System.out.println("Do you wish to accept or reject an offer");
 				String aor = sc.nextLine();
@@ -233,27 +262,30 @@ public class MenuScreen {
 					double am = od.offerAmount(id);
 					int uid = od.userId(id);
 					String vini = od.vinById(id);
-//					System.out.println(es.acceptedOffer((new Offers(id)), (new Vehicles ((am), (new User(uid)), (new Employee(emp)), vini))));
+
 
 					es.acceptedOffer((new Offers(id)), (new Vehicles(am, (new User(uid)), (new Employee(emp)), vini)));
 					es.rejectOffer(vini, am);
-				} else if (aor == "reject") {
+				} else if (aor.equals("reject")) {
 					System.out.println("Enter the id of the offer you want to reject");
-					
+					int id = sc.nextInt();
+					es.rejectOfferById(id);
+					System.out.println("Offer had been rejected");
+					sc.nextLine();
 				} else
 					System.out.println("invalid input");
 				
 				
 			break;
-			case "6": System.out.println();
-			int exit = 6;
+			case "7": System.out.println();
+			int exit = 7;
 			System.out.println("GoodBye");
 			System.exit(exit);
 			break;
-			default:
-				System.out.println("Invalid input");
+//			default:
+//				System.out.println("Invalid input");
 			}
 
-		} while(!input.equals("3"));
+		} while(!input.equals("7"));
 	}
 }

@@ -25,5 +25,6 @@ public interface EmployeeService {
 	
 	public boolean acceptedOffer(Offers offer, Vehicles vehicle);
 	public boolean rejectOffer(String vin, double offer);
-
-}
+	public boolean rejectOfferById(int id);
+	public abstract List<Offers> getAllOffers();
+	}

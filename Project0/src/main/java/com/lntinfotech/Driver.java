@@ -20,11 +20,12 @@ public class Driver {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-//		MenuScreen.display();
+		MenuScreen.display();
 //		OfferDao od = new OfferPostgres();
+//		od.rejectOfferById(19);
 //		System.out.println(od.offerAmount(1));
-		EmployeeDao ed = new EmployeePostgres();
-		System.out.println(ed.getEmployeeByEmail("mm.com"));
+//		EmployeeDao ed = new EmployeePostgres();
+//		System.out.println(ed.getEmployeeByEmail("mm.com"));
 //		UserDao ud = new UserPostgres();
 //		VehicleDao vd = new VehiclePostgres();
 //		System.out.println(od.getOffersByVIN("KL4CJESBXFB218315"));
