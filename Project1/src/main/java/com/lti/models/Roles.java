@@ -13,8 +13,9 @@ import javax.persistence.Table;
 public class Roles {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "role_id")
+	@Column(name = "role_id", nullable = false)
 	private int roleId;
+	@Column(name = "user_role", nullable = false)
 	private String userRole;
 	public Roles() {
 		super();

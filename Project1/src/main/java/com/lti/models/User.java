@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -16,14 +16,19 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "user_id")
+	@Column(name = "user_id", nullable = false)
 	private int userId;
+	@Column(name = "username", unique = true, nullable = false)
 	private String username;
+	@Column(name = "password", nullable = false)
 	private String password;
+	@Column(name = "first_name", nullable = false)
 	private String firstName;
+	@Column(name = "last_name", nullable = false)
 	private String lastName;
+	@Column(name = "email", nullable = false, unique = true)
 	private String email;
-	@OneToOne @JoinColumn(name="role_id")
+	@ManyToOne @JoinColumn(name = "role_id", nullable = false)
 	private Roles roleId;
 	
 	public int getUserId() {
@@ -159,6 +164,10 @@ public class User {
 		this.lastName = lastName;
 		this.email = email;
 		this.roleId = roleId;
+	}
+	public User(String username) {
+		super();
+		this.username = username;
 	}
 	
 	

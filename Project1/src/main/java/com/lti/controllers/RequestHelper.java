@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.lti.delegates.AuthDelegate;
+import com.lti.delegates.ReimbursementDelegate;
 import com.lti.delegates.UserDelegate;
 
 
@@ -14,62 +15,39 @@ import com.lti.delegates.UserDelegate;
 public class RequestHelper {
 
 	private UserDelegate ud = new UserDelegate();
-
+	private ReimbursementDelegate rd = new ReimbursementDelegate();
 	private AuthDelegate ad = new AuthDelegate();
 	
 	public void process(HttpServletRequest rq, HttpServletResponse rs) throws IOException, ServletException {
-		/*
-		 * Based on the request URL, we want to map the HttpServletRequest rq,
-		 * HttpServletResponse rs to the appropriate delegate 
-		 * 		- ie: 
-		 * 			- if /users go to User Delegate 
-		 * 				- call process 
-		 * 			- if /pokemons go to Poke Delegate 
-		 * 				- call process
-		 */
-
-		/*
-		 *  Retrieving the path of the request to reroute request to appropriate handler
-		 *  	- ie: path = "/users/1"
-		 */
 		String path = rq.getPathInfo();
-		
-		// if no path is found sent an error
-		if (path != null) {
-			
-			/*
-			 * removes the initial "/"
-			 * 	- path = "users/1"
-			 */
+
+		if (path != null && !path.equals("/")) {
+
 			path = path.substring(1);
-			
-			/*
-			 * if a "/" character is present in path, split at that character and returns the first element
-			 * 	- path = "users"
-			 * 	- setting a request attribute to the second part of the url: 1
-			 */
-			if(path.indexOf("/") != -1) {
-				String[] paths = path.split("/");
+
+			if (path.indexOf("/") != -1) {
+				String[] paths = path.split("/", 2);
 				path = paths[0];
 				rq.setAttribute("pathNext", paths[1]);
 			}
-			
-			switch(path) {
+
+			switch (path) {
 			case "users":
 				ud.process(rq, rs);
 				break;
-//			case "pokemons":
-//				// Can add auth behavior here.
-//				pd.process(rq, rs);
-//				break;
-//			case "auth":
-//				 ad.process(rq, rs);
-//				 break;
+			case "auth":
+				ad.process(rq, rs);
+				break;
+			case "reimb":
+				rd.process(rq, rs);
+				break;
 			default:
-				rs.sendError(400, "Path not supported:" + path);
+				rs.sendError(400, "Path not supported " + path);
 			}
+
 		} else {
-			rs.sendError(400, "No path found.");
+			rs.sendError(400, "No path found");
 		}
+
 	}
 }

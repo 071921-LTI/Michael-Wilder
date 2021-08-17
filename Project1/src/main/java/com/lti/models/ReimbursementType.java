@@ -12,8 +12,9 @@ import javax.persistence.Table;
 public class ReimbursementType {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "type_id")
+	@Column(name = "type_id", nullable = false)
 	private int typeId;
+	@Column(name = "type", nullable = false)
 	private String type;
 	public int getTypeId() {
 		return typeId;

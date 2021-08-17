@@ -1,10 +1,13 @@
 package com.lti.services;
 
+
+
 import com.lti.exceptions.UserNotFoundException;
+import com.lti.exceptions.LoginException;
 import com.lti.models.User;
 
 public interface AuthService {
-	User login(String username, String password) throws UserNotFoundException;
-	boolean authorize(String token) throws UserNotFoundException;
-	String createToken(User user);
+	String login(String username, String password) throws UserNotFoundException, LoginException;
+	String authorize(String token) throws UserNotFoundException;
+
 }

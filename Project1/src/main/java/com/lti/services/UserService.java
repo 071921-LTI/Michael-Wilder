@@ -9,4 +9,6 @@ public interface UserService {
 	boolean addUser(User user);
 	List<User> getUsers();
 	User getUserById(int id) throws UserNotFoundException;
+	User getUserByUsername(String username) throws UserNotFoundException;
+	boolean update(User user);
 }

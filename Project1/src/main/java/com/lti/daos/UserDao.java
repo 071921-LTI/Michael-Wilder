@@ -14,5 +14,5 @@ public interface UserDao {
 	User addUser(User user);
 	// if no user is found
 	int deleteUser(int id) throws UserNotFoundException;
-	void update(User user);
+	boolean update(User user);
 }

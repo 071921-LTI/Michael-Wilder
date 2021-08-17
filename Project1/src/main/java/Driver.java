@@ -1,3 +1,6 @@
+import java.sql.Date;
+import java.sql.Timestamp;
+
 import com.lti.daos.ReimbursementDao;
 import com.lti.daos.ReimbursementHibernate;
 import com.lti.daos.ReimbursementStatusDao;
@@ -21,31 +24,42 @@ public class Driver {
 	static ReimbursementDao red = new ReimbursementHibernate();
 	static ReimbursementStatusDao rsd = new ReimbursementStatusHibernate();
 	static ReimbursementTypeDao rtd = new ReimbursementTypeHibernate();
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UserNotFoundException {
 		// TODO Auto-generated method stub
 
-		Roles r = new Roles("Manager");
-		User u = new User("user", "pass", "mike", "wilder", "mm.com", r);
-		User u1 = new User("user1", "pass", "bob", "forapples", "bf.com", r);
-		ReimbursementStatus rs = new ReimbursementStatus("Pending");
-		ReimbursementType rt = new ReimbursementType("Dinner");
-		Reimbursement re = new Reimbursement(100.00, u, rs, rt);
-		Reimbursement re1 = new Reimbursement(100.00, u1, rs, rt);
-		rd.addRole(r);
-		ud.addUser(u);
-		ud.addUser(u1);
-		rsd.addStatus(rs);
-		rtd.addType(rt);
-		red.reimbursementAdded(re);
-		red.reimbursementAdded(re);
-		red.reimbursementAdded(re1);
+//		Roles r = new Roles("Manager");
+//		User u = new User("user", "pass", "mike", "wilder", "mm.com", r);
+//		User u1 = new User("user1", "pass", "bob", "forapples", "bf.com", r);
+//		ReimbursementStatus rs = new ReimbursementStatus("Pending");
+//		ReimbursementType rt = new ReimbursementType(1);
+//		Reimbursement re = new Reimbursement(100.00, new Timestamp(System.currentTimeMillis()), ud.getUserById(2), rsd.getReimbursementStatusById(1), rtd.getReimbursementTypeById(1));
+//		Reimbursement re1 = new Reimbursement(100.00, new Timestamp(System.currentTimeMillis()), u1, rs, rt); 
+//		Reimbursement ree;
+////		try {
+//			ree = new Reimbursement(2, 150.00, new Timestamp(System.currentTimeMillis()), ud.getUserById(2), rsd.getReimbursementStatusById(1), rtd.getReimbursementTypeById(1));
+//			red.updateReimbursement(ree);
+//		} catch (UserNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} 
+//		System.out.println();
+//		System.out.println(red.getReimbursementById(2));
+//		red.deleteReimbursement(red.getReimbursementById(2));
+//		rd.addRole(r);
+//		ud.addUser(u);
+//		ud.addUser(u1);
+//		rsd.addStatus(rs);
+//		rtd.addType(rt);
+//		red.reimbursementAdded(re);
+//		red.reimbursementAdded(re);
+//		red.reimbursementAdded(re1);
 //		try {
 //			System.out.println(ud.getUserById(1));
 //		} catch (UserNotFoundException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		System.out.println(red.getReimbursementByUserAndStatus(u1, rs));
+//		System.out.println(red.getReimbursementByUserAndStatus(u1, rs));
 	}
 
 }

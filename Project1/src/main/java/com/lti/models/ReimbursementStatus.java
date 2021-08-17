@@ -12,8 +12,9 @@ import javax.persistence.Table;
 public class ReimbursementStatus {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "stat_id")
+	@Column(name = "stat_id", nullable = false)
 	private int statId;
+	@Column(name = "status", nullable = false)
 	private String status;
 	
 	public int getStatusId() {

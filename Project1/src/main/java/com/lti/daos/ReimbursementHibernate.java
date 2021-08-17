@@ -13,6 +13,7 @@ import com.lti.models.User;
 import com.lti.util.HibernateUtil;
 
 
+
 public class ReimbursementHibernate implements ReimbursementDao{
 
 	@Override
@@ -29,7 +30,7 @@ public class ReimbursementHibernate implements ReimbursementDao{
 	public List<Reimbursement> getReimbursementByUserAndStatus(User user, ReimbursementStatus status) {
 		List<Reimbursement> reimbursement = null;
 		try(Session s = HibernateUtil.getSessionFactory().openSession()){
-			String hql = ("From Reimbursement where auther = :userId and statId = :stat");
+			String hql = ("From Reimbursement where author = :userId and statId = :stat");
 			TypedQuery<Reimbursement> tq = s.createQuery(hql, Reimbursement.class);
 			tq.setParameter("userId", user);
 			tq.setParameter("stat", status);
@@ -42,8 +43,18 @@ public class ReimbursementHibernate implements ReimbursementDao{
 	}
 
 	@Override
-	public void updateReimbursement(Reimbursement reimb) {
-		// TODO Auto-generated method stub
+	public boolean updateReimbursement(Reimbursement reimb) {
+		try (Session s = HibernateUtil.getSessionFactory().openSession()) {
+			if (s.get(Reimbursement.class, reimb.getReimbId()) == null) {
+				return false;
+			} else {
+				Transaction tx = s.beginTransaction();
+				s.merge(reimb);
+				tx.commit();
+
+			}
+			return true;
+		}
 		
 	}
 
@@ -66,7 +77,7 @@ public class ReimbursementHibernate implements ReimbursementDao{
 	public List<Reimbursement> getReimbursementByUser(User user) {
 		List<Reimbursement> reimbursement = null;
 		try(Session s = HibernateUtil.getSessionFactory().openSession()){
-			String hql = ("From Reimbursement where auther = :userId");
+			String hql = ("From Reimbursement where author = :userId");
 			TypedQuery<Reimbursement> tq = s.createQuery(hql, Reimbursement.class);
 			tq.setParameter("userId", user);
 			
@@ -78,8 +89,30 @@ public class ReimbursementHibernate implements ReimbursementDao{
 
 	@Override
 	public void deleteReimbursement(Reimbursement reimb) {
-		// TODO Auto-generated method stub
+		try (Session s = HibernateUtil.getSessionFactory().openSession()) {
+			Transaction tx = s.beginTransaction();
+			s.merge(reimb);
+			tx.commit();
+		}
 		
+	}
+
+	@Override
+	public Reimbursement getReimbursementById(int reimbId) {
+		Reimbursement r = null;
+		try(Session s = HibernateUtil.getSessionFactory().openSession()){
+			r = s.get(Reimbursement.class, reimbId);
+		}
+		return r;
+	}
+
+	@Override
+	public List<Reimbursement> getAllReimbursement() {
+		List<Reimbursement> reimbs = null;
+		try (Session s = HibernateUtil.getSessionFactory().openSession()) {
+			reimbs = s.createQuery("FROM Reimbursement", Reimbursement.class).getResultList();
+		}
+		return reimbs;
 	}
 
 }
