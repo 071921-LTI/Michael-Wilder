@@ -23,8 +23,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public List<User> getUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		return ud.getUsers();
 	}
 
 	@Override
@@ -42,5 +41,8 @@ public class UserServiceImpl implements UserService{
 	public boolean update(User user) {
 		return ud.update(user);
 	}
+
+	
+
 
 }

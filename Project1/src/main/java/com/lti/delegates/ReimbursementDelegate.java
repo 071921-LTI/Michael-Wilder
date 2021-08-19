@@ -11,6 +11,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lti.daos.ReimbursementStatusDao;
 import com.lti.daos.ReimbursementStatusHibernate;
@@ -33,6 +36,7 @@ public class ReimbursementDelegate implements Delegatable{
 	UserService us = new UserServiceImpl();
 	ReimbursementService rsi = new ReimbursementServiceImpl();
 	ReimbursementStatusDao rsd = new ReimbursementStatusHibernate();
+	private static Logger log = LogManager.getRootLogger();
 	@Override
 	public void process(HttpServletRequest rq, HttpServletResponse rs) throws ServletException, IOException {
 		String method = rq.getMethod();
@@ -64,16 +68,14 @@ public class ReimbursementDelegate implements Delegatable{
 			username = as.authorize(token);
 			System.out.println(username);
 		} catch (UserNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		User user = null;
 		try {
- 
 			user = us.getUserByUsername(username);
 System.out.println(user);
 		} catch (UserNotFoundException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		if (user != null) {
@@ -84,16 +86,14 @@ System.out.println(user);
 
 					List<Reimbursement> reimbs = null;
 
-					if (user.getRoleId().getUserRole().equals("manager")) {
-						reimbs = rsi.getAllReimbursement();
+					if (user.getRoleId().getUserRole().equals("Manager")) {
+						reimbs = rsi.getReimbursementByStatus(rsd.getReimbursementStatusById(1));
+						System.out.println(reimbs);
 					} else {
 						try {
-							
-							System.out.println(username);
 							reimbs = rsi.getReimbursementByUserAndStatus(us.getUserByUsername(username), rsd.getReimbursementStatusById(1));
-							System.out.println(reimbs);
 						} catch (UserNotFoundException e) {
-							// TODO Auto-generated catch block
+							log.warn("User Not Found");
 							e.printStackTrace();
 						}
 					}
@@ -103,19 +103,20 @@ System.out.println(user);
 						pw.write(new ObjectMapper().writeValueAsString(reimbs));
 					}
 
-				}else if(pathNext.indexOf("/") == -1 && pathNext.equals("RR")){
+				}
+				else if(pathNext.indexOf("/") == -1 && pathNext.equals("RR")){
 					List<Reimbursement> reimbs = null;
 
-					if (user.getRoleId().getUserRole().equals("manager")) {
-						reimbs = rsi.getAllReimbursement();
+					if (user.getRoleId().getUserRole().equals("Manager")) {
+						reimbs = rsi.getReimbursementByStatus2(rsd.getReimbursementStatusById(2), rsd.getReimbursementStatusById(3));
 					} else {
 						try {
 							
 							System.out.println(username);
-							reimbs = rsi.getReimbursementByUserAndStatus(us.getUserByUsername(username), rsd.getReimbursementStatusById(2));
+							reimbs = rsi.getReimbursementByUserAndStatus2(us.getUserByUsername(username), rsd.getReimbursementStatusById(2), rsd.getReimbursementStatusById(3));
 							System.out.println(reimbs);
 						} catch (UserNotFoundException e) {
-							// TODO Auto-generated catch block
+							log.warn("User Not Found");
 							e.printStackTrace();
 						}
 					}
@@ -128,22 +129,30 @@ System.out.println(user);
 				} 
 				else {
 					String[] path = pathNext.split("/");
-					if (!path[0].equals("view")) {
+					if (!path[0].equals("SR")) {
 						rs.sendError(400, "Path Error");
 					} else {
-						int reimbId = Integer.valueOf(path[1]);
-						Reimbursement reimb = rsi.getReimbursementById(reimbId);
+						List<Reimbursement> reimbs = null;
+						String userN = String.valueOf(path[1]);
+						try {
+							reimbs = rsi.getReimbursementByUser(us.getUserByUsername(userN));
+						} catch (UserNotFoundException e) {
+							log.warn("User Not Found");
+							e.printStackTrace();
+						}
 						rs.setStatus(200);
 						try (PrintWriter pw = rs.getWriter()) {
-							pw.write(new ObjectMapper().writeValueAsString(reimb));
+							pw.write(new ObjectMapper().writeValueAsString(reimbs));
 						}
 					}
 				}
 			} else {
 				rs.sendError(400, "Path not found");
+				log.warn("Path not found");
 			}
 		} else {
-			rs.sendError(400, "Bad token");
+			rs.sendError(400, "Token Invalid");
+			log.warn("Token Invalid");
 		}
 		
 	}
@@ -155,46 +164,70 @@ System.out.println(user);
 		try {
 			username = as.authorize(token);
 		} catch (UserNotFoundException e) {
-			// TODO Auto-generated catch block
+			log.warn("User Not Found");
 			e.printStackTrace();
 		}
 		User user = null;
 		try {
 			user = us.getUserByUsername(username);
 		} catch (UserNotFoundException e) {
-			// TODO Auto-generated catch block
+			log.warn("User Not Found");
 			e.printStackTrace();
 		}
 		
 		if (user != null) {
 			String pathNext = (String) rq.getAttribute("pathNext");
 			if (pathNext != null) {
-				if (pathNext.equals("update")) {
-					
+				if (pathNext.equals("updateApprove")) {
+					System.out.println("Am I here");
 					InputStream request = rq.getInputStream();
 					Reimbursement reimb = new ObjectMapper().readValue(request, Reimbursement.class);
+					int id = reimb.getReimbId();
+					System.out.println(id);
+					ReimbursementStatus status = rsd.getReimbursementStatusById(2);
+					Reimbursement reimbursement = rsi.getReimbursementById(id);
+					reimbursement.setResolver(user);
+					reimbursement.setReimbRes(Timestamp.valueOf(LocalDateTime.now()));
+					reimbursement.setStatId(status);
 					
-					reimb.setResolver(user);
-					reimb.setReimbRes(Timestamp.valueOf(LocalDateTime.now()));
-					
-					if (rsi.updateReimbursement(reimb)) {
+					if (rsi.updateReimbursement(reimbursement)) {
 						rs.setStatus(200);
 					}else {
 						rs.sendError(400, "Could not update reimbursement");
 						System.out.println("could not update");
 					}
 					
-				}else {
-					rs.sendError(400, "Path invalid");
+				}else if (pathNext.equals("updateDeny")) {
+					System.out.println("Am I here");
+					InputStream request = rq.getInputStream();
+					Reimbursement reimb = new ObjectMapper().readValue(request, Reimbursement.class);
+					int id = reimb.getReimbId();
+					System.out.println(id);
+					ReimbursementStatus status = rsd.getReimbursementStatusById(3);
+					Reimbursement reimbursement = rsi.getReimbursementById(id);
+					reimbursement.setResolver(user);
+					reimbursement.setReimbRes(Timestamp.valueOf(LocalDateTime.now()));
+					reimbursement.setStatId(status);
 					
+					if (rsi.updateReimbursement(reimbursement)) {
+						rs.setStatus(200);
+					}else {
+						rs.sendError(400, "Update Not Successful");
+						log.warn("Update Failed");
+					}
+					
+				}
+				else {
+					rs.sendError(400, "Path invalid");
+					log.warn("Path Invalid");
 				}
 			}else {
 				rs.sendError(400, "Path not found");
-				
+				log.warn("Path not found");
 			}
 		}else {
 			rs.sendError(400, "Token Invalid");
-			
+			log.warn("Token Invalid");
 		}
 		
 	}
@@ -205,15 +238,18 @@ System.out.println(user);
 		String username = null;
 		try {
 			username = as.authorize(token);
+			System.out.println(username);
 		} catch (UserNotFoundException e) {
-			// TODO Auto-generated catch block
+			log.warn("User Not Found");
 			e.printStackTrace();
 		}
 		User user = null;
 		try {
+ 
 			user = us.getUserByUsername(username);
+			System.out.println(user);
 		} catch (UserNotFoundException e) {
-			// TODO Auto-generated catch block
+			log.warn("User Not Found");
 			e.printStackTrace();
 		}
 		
@@ -235,17 +271,22 @@ System.out.println(user);
 					if (rsi.reimbursementAdded(reimb)) {
 						rs.setStatus(201);
 					}else {
-						rs.sendError(400, "Could not add reimbursement");
+						rs.sendError(400, "Add Not Successful");
+						log.warn("Add Fail");
 					}
 					
-				}else {
+				}
+				else {
 					rs.sendError(400, "Path invalid");
+					log.warn("Path Invalid");
 				}
 			}else {
 				rs.sendError(400, "Path not found");
+				log.warn("Path not found");
 			}
 		}else {
 			rs.sendError(400, "Token Invalid");
+			log.warn("Token Invalid");
 		}
 		
 	}

@@ -3,9 +3,16 @@ package com.lti.daos;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+
+import org.hibernate.criterion.Projections;
+import org.hibernate.transform.Transformers;
 
 import com.lti.exceptions.UserNotFoundException;
 import com.lti.models.User;
@@ -38,8 +45,11 @@ public class UserHibernate implements UserDao{
 
 	@Override
 	public List<User> getUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		List<User> u = null;
+		try(Session s = HibernateUtil.getSessionFactory().openSession()){
+			u = s.createQuery("FROM User", User.class).list();
+		}
+		return u;
 	}
 
 	@Override
@@ -74,4 +84,6 @@ public class UserHibernate implements UserDao{
 	}
 
 }
+
+	
 	}

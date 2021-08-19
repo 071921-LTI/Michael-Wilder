@@ -3,10 +3,14 @@ package com.lti.delegates;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lti.daos.UserDao;
@@ -22,10 +26,9 @@ public class UserDelegate implements Delegatable{
 	AuthService as = new AuthServiceImpl();
 	UserDao ud = new UserHibernate();
 	UserService us = new UserServiceImpl();
-
+	private static Logger log = LogManager.getRootLogger();
 	@Override
 	public void process(HttpServletRequest rq, HttpServletResponse rs) throws ServletException, IOException {
-		// Retrieve GET, POST, PUT, DELETE...
 		String method = rq.getMethod();
 
 		switch (method) {
@@ -55,66 +58,72 @@ public class UserDelegate implements Delegatable{
 		try {
 			username = as.authorize(token);
 		} catch (UserNotFoundException e) {
-			// TODO Auto-generated catch block
+			log.warn("User Not Found");
 			e.printStackTrace();
 		}
 		User user = null;
 		try {
 			user = us.getUserByUsername(username);
+			System.out.println(user);
 		} catch (UserNotFoundException e) {
-			// TODO Auto-generated catch block
+			log.warn("User Not Found");
 			e.printStackTrace();
 		}
 		if (user != null) {
 			String pathNext = (String) rq.getAttribute("pathNext");
 			if (pathNext != null) {
-				if (pathNext.indexOf("/") == -1 && pathNext.equals("prefs")) {
-
+				if (pathNext.indexOf("/") == -1 && pathNext.equals("info")) {
+					
 					rs.setStatus(200);
 					try (PrintWriter pw = rs.getWriter()) {
 						pw.write(new ObjectMapper().writeValueAsString(user));
 					}
 
-				} else {
+				} else if (pathNext.indexOf("/") == -1 && pathNext.equals("emp")) {
+					rs.setStatus(200);
+					List<User> u = null;
+					u = us.getUsers();
+					System.out.println(u);
+					try (PrintWriter pw = rs.getWriter()) {
+						pw.write(new ObjectMapper().writeValueAsString(u));
+					}
+				}else {
 					
 					rs.sendError(400, "Path not found");
+					log.warn("Path Not Found");
 				}
 			} else {
 				rs.sendError(400, "Path not found");
+				log.warn("Path Not Found");
 			}
 		} else {
-			rs.sendError(400, "Bad token");
+			rs.sendError(400, "Token Invalid");
+			log.warn("Token Invalid");
 		}
 	}
 
 	@Override
 	public void handlePut(HttpServletRequest rq, HttpServletResponse rs) throws ServletException, IOException {
-		System.out.println("In handlePut");
 
-	}
-
-	@Override
-	public void handlePost(HttpServletRequest rq, HttpServletResponse rs) throws ServletException, IOException {
-		System.out.println("In handlePost");
 		String token = rq.getHeader("Authorize");
 		String username = null;
 		User user = null;
 		try {
 			username = as.authorize(token);
 		} catch (UserNotFoundException e1) {
-			// TODO Auto-generated catch block
+			log.warn("User Not Found");
 			e1.printStackTrace();
 		}
 		try {
 			user = us.getUserByUsername(username);
 		} catch (UserNotFoundException e) {
-			// TODO Auto-generated catch block
+			log.warn("User Not Found");
 			e.printStackTrace();
 		}
 		if (user != null) {
 			String pathNext = (String) rq.getAttribute("pathNext");
 			if (pathNext != null) {
-				if (pathNext.indexOf("/") == -1 && pathNext.equals("prefs")) {
+				if (pathNext.indexOf("/") == -1 && pathNext.equals("info")) {
 
 					InputStream request = rq.getInputStream();
 					User userTemp = new ObjectMapper().readValue(request, User.class);
@@ -127,18 +136,27 @@ public class UserDelegate implements Delegatable{
 						rs.addHeader("Authorize", token);
 					}else {
 						rs.sendError(400, "Update failed");
+						log.warn("Update Failed");
 					}
 
 				} else {
 					
 					rs.sendError(400, "Path not found");
+					log.warn("Path Not Found");
 				}
 			} else {
 				rs.sendError(400, "Path not found");
+				log.warn("Path Not Found");
 			}
 		} else {
-			rs.sendError(400, "Bad token");
+			rs.sendError(400, "Token Invalid");
+			log.warn("Token Invalid");
 		}
+	}
+
+	@Override
+	public void handlePost(HttpServletRequest rq, HttpServletResponse rs) throws ServletException, IOException {
+		
 
 	}
 

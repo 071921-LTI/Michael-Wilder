@@ -115,4 +115,35 @@ public class ReimbursementHibernate implements ReimbursementDao{
 		return reimbs;
 	}
 
+	@Override
+	public List<Reimbursement> getReimbursementByUserAndStatus2(User user, ReimbursementStatus status,
+			ReimbursementStatus status1) {
+		List<Reimbursement> reimbursement = null;
+		try(Session s = HibernateUtil.getSessionFactory().openSession()){
+			String hql = ("From Reimbursement where author = :userId and statId = :stat or statId = :stat1");
+			TypedQuery<Reimbursement> tq = s.createQuery(hql, Reimbursement.class);
+			tq.setParameter("userId", user);
+			tq.setParameter("stat", status);
+			tq.setParameter("stat1", status1);
+			
+			reimbursement = tq.getResultList();
+		}
+		return reimbursement;
+	}
+
+	@Override
+	public List<Reimbursement> getReimbursementByStatus2(ReimbursementStatus status, ReimbursementStatus status1) {
+		List<Reimbursement> reimbursement = null;
+		try(Session s = HibernateUtil.getSessionFactory().openSession()){
+			String hql = ("From Reimbursement where statId = :stat or statId = :stat1");
+			TypedQuery<Reimbursement> tq = s.createQuery(hql, Reimbursement.class);
+
+			tq.setParameter("stat", status);
+			tq.setParameter("stat1", status1);
+			
+			reimbursement = tq.getResultList();
+		}
+		return reimbursement;
+	}
+
 }

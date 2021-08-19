@@ -57,4 +57,15 @@ public class ReimbursementServiceImpl implements ReimbursementService{
 		return rd.getReimbursementById(reimbId);
 	}
 
+	@Override
+	public List<Reimbursement> getReimbursementByUserAndStatus2(User user, ReimbursementStatus status,
+			ReimbursementStatus status1) {
+		return rd.getReimbursementByUserAndStatus2(user, status, status1);
+	}
+
+	@Override
+	public List<Reimbursement> getReimbursementByStatus2(ReimbursementStatus status, ReimbursementStatus status1) {
+		return rd.getReimbursementByStatus2(status, status1);
+	}
+
 }

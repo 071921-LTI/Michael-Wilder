@@ -8,12 +8,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lti.daos.UserDao;
 import com.lti.daos.UserHibernate;
-import com.lti.exceptions.UserNotFoundException;
 import com.lti.exceptions.LoginException;
+import com.lti.exceptions.UserNotFoundException;
 import com.lti.models.User;
 import com.lti.services.AuthService;
 import com.lti.services.AuthServiceImpl;
@@ -21,7 +23,7 @@ import com.lti.services.AuthServiceImpl;
 public class AuthDelegate implements Delegatable{
 	AuthService as = new AuthServiceImpl();
 	UserDao ud = new UserHibernate();
-
+	private static Logger log = LogManager.getRootLogger();
 	@Override
 	public void process(HttpServletRequest rq, HttpServletResponse rs) throws ServletException, IOException {
 		String method = rq.getMethod();
@@ -77,22 +79,27 @@ public class AuthDelegate implements Delegatable{
 					System.out.println(token);
 					
 					t2 = tokens[1];
-					System.out.println(t2);
+
 					if(t2.equals("Manager")) {
-						System.out.println(t2);
+						log.info("Manager Logged In");
+						log.info("Succesful login with token: " + token);
 						rs.setStatus(200);
 					}else {
+						log.info("Succesful login with token: " + token);
 						rs.setStatus(209);
 					}
 					
 				} catch (NoResultException e) {
 					token = "username";
+					log.warn("wrong username");
 					rs.setStatus(400);
 				} catch (UserNotFoundException e) {
 					token = "username";
+					log.warn("wrong username");
 					rs.setStatus(400);
 				} catch (LoginException e) {
 					token = "password";
+					log.warn("wrong password");
 					rs.setStatus(400);
 				}
 				
@@ -101,9 +108,12 @@ public class AuthDelegate implements Delegatable{
 			}
 				else {
 				rs.sendError(400, "Path invalid");
+				log.warn("Path invalid");
+				
 			}
 		}else {
 			rs.sendError(400, "Path not found");
+			log.warn("Path not found");
 		}
 	}
 

@@ -17,11 +17,11 @@ public class ReimbursementStatus {
 	@Column(name = "status", nullable = false)
 	private String status;
 	
-	public int getStatusId() {
+	public int getStatId() {
 		return statId;
 	}
-	public void setStatusId(int statusId) {
-		this.statId = statusId;
+	public void setStatId(int statId) {
+		this.statId = statId;
 	}
 	public String getStatus() {
 		return status;
@@ -33,14 +33,14 @@ public class ReimbursementStatus {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public ReimbursementStatus(int statusId, String status) {
+	public ReimbursementStatus(int statId, String status) {
 		super();
-		this.statId = statusId;
+		this.statId = statId;
 		this.status = status;
 	}
-	public ReimbursementStatus(int statusId) {
+	public ReimbursementStatus(int statId) {
 		super();
-		this.statId = statusId;
+		this.statId = statId;
 	}
 	
 	public ReimbursementStatus(String status) {
@@ -49,7 +49,7 @@ public class ReimbursementStatus {
 	}
 	@Override
 	public String toString() {
-		return "ReimburstmentStatus [statusId=" + statId + ", " + (status != null ? "status=" + status : "") + "]";
+		return "ReimburstmentStatus [statId=" + statId + ", " + (status != null ? "status=" + status : "") + "]";
 	}
 	@Override
 	public int hashCode() {
