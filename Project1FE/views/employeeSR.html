@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+     
+<meta charset="ISO-8859-1">
+<title>Employee Reimbursement System</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+	<link href="../stylesheets/employeeSR.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <a class="navbar-brand" href="employeeSR.html">Submit Reimbursement</a>
+        <button class="navbar-toggler ml-auto custom-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="employee.html">Home </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="employeeSR.html">Submit Reimbursement</a>
+              <a class="nav-link" href="#">Upload Receipt</a>
+              <a class="nav-link" href="employeePR.html">View Pending Reimbursements<span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="employeeRR.html">View Resolved Reimbursements</a>
+              <a class="nav-link" href="employeeInfo.html">View Your Information</a>
+              <a class="nav-link" input type="logout" id="logoutButton" href="#" >Logout</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+   
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="card">
+          <form onsubmit="event.preventDefault()" class="box">
+           <h1 class="h3 mb-3 fw-normal">Reimbursement Request</h1>
+           <div id="error">
+          </div>
+          <div id="success">
+          </div>
+        
+                        <input type="number" id="amount" min="0" name="" placeholder="Amount"> 
+                        
+                        <input type="description"  id="description" name="" placeholder="Description"> 
+
+                            <select class="dropdown" id="type">
+                              <option>---Reimbursement Type---</option>
+                              <option>Lodging</option>
+                              <option>Travel</option>
+                              <option>Food</option>
+                              <option>Other</option>
+                            </select> 
+                        <input type="submit" name="" id="submitButton" value="Submit" href="#">
+                        <input type="reset" name="" id="clearButton" value="Clear" href="#">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+    </div>
+    
+    <script src="../scripts/employeeSR.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    
+</body>
+</html>

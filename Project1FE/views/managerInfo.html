@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link href="../stylesheets/employeeInfo.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <a class="navbar-brand" href="managerInfo.html">View Your Information</a>
+        <button class="navbar-toggler ml-auto custom-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="manager.html">Home </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="managerPR.html">View Pending Reimbursements</a>
+                <a class="nav-link" href="managerRR.html">View Resolved Reimbursements</a>
+                <a class="nav-link" href="managerVE.html">View All Employees</a>
+                <a class="nav-link" href="managerSE.html">Search By User</a>
+                <a class="nav-link" href="managerInfo.html">View Your Information</a>
+                <a class="nav-link" input type="logout" id="logoutButton" href="#" >Logout</a>
+  
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="container">
+        <h2>User Information</h2>           
+        <table class="center" id="userTable" <table border="3" table cellpadding="10" table bordercolor="#ffffff" table bgcolor="#3498db">
+          <thead>
+      <tr>
+        
+        <th>User Name</th>
+        <th>Password</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <!-- <th>Role</th> -->
+        
+        </tr>
+      </thead>
+      <tbody id="tableBody1">
+        
+      </tbody>
+    </table>
+       
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+              <form onsubmit="event.preventDefault()" class="box">
+               <h1 class="h3 mb-3 fw-normal">Update User Information</h1>
+               <div id="error">
+              </div>
+              <div id="success">
+              </div>
+
+        <input type="text" id="username" placeholder="Enter your username">
+      
+      
+          
+          <input type="password" id="password" placeholder="Enter your password">
+        
+        
+          
+          <input type="text" id="first" placeholder="Enter your first name">
+        
+        
+          
+          <input type="text" id="last" placeholder="Enter your last name">
+        
+        
+          
+          <input type="email" id="email" placeholder="Enter your email">
+        
+        <br>
+      
+        <input type="submit" name="" id="editButton" value="Update User" href="#">
+      
+    </form>
+  </div>
+  
+      <script src="../scripts/managerInfo.js";></script>
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+</body>
+
+</html>

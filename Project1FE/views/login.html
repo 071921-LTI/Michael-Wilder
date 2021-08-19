@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Employee Reimbursement System</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+	<link href="../stylesheets/login.css" rel="stylesheet">
+</head>
+<body>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="card">
+					<form onsubmit="event.preventDefault()" class="box" id="loginForm">
+						<h1>Login</h1>
+						<p class="text-muted"> Please enter your login and password!</p> 
+						<div id="error"> </div>
+							<br> 
+							<input type="text" id="username" name="" placeholder="Username"> 
+							<input type="password" id="password" name="" placeholder="Password"> 
+							<br> 
+							<input type="submit"  id="submitButton" value="Login" href="#">
+						<div class="col-md-12">
+
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="../scripts/login.js"></script>
+</body>
+</html>
+
