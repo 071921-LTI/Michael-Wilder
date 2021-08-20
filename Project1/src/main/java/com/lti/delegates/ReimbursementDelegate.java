@@ -66,14 +66,14 @@ public class ReimbursementDelegate implements Delegatable{
 		String username = null;
 		try {
 			username = as.authorize(token);
-			System.out.println(username);
+
 		} catch (UserNotFoundException e) {
 			e.printStackTrace();
 		}
 		User user = null;
 		try {
 			user = us.getUserByUsername(username);
-System.out.println(user);
+
 		} catch (UserNotFoundException e) {
 
 			e.printStackTrace();
@@ -88,7 +88,7 @@ System.out.println(user);
 
 					if (user.getRoleId().getUserRole().equals("Manager")) {
 						reimbs = rsi.getReimbursementByStatus(rsd.getReimbursementStatusById(1));
-						System.out.println(reimbs);
+
 					} else {
 						try {
 							reimbs = rsi.getReimbursementByUserAndStatus(us.getUserByUsername(username), rsd.getReimbursementStatusById(1));
@@ -112,9 +112,8 @@ System.out.println(user);
 					} else {
 						try {
 							
-							System.out.println(username);
+
 							reimbs = rsi.getReimbursementByUserAndStatus2(us.getUserByUsername(username), rsd.getReimbursementStatusById(2), rsd.getReimbursementStatusById(3));
-							System.out.println(reimbs);
 						} catch (UserNotFoundException e) {
 							log.warn("User Not Found");
 							e.printStackTrace();
@@ -238,7 +237,7 @@ System.out.println(user);
 		String username = null;
 		try {
 			username = as.authorize(token);
-			System.out.println(username);
+
 		} catch (UserNotFoundException e) {
 			log.warn("User Not Found");
 			e.printStackTrace();
@@ -247,7 +246,7 @@ System.out.println(user);
 		try {
  
 			user = us.getUserByUsername(username);
-			System.out.println(user);
+
 		} catch (UserNotFoundException e) {
 			log.warn("User Not Found");
 			e.printStackTrace();

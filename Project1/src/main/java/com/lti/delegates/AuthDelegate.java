@@ -76,7 +76,7 @@ public class AuthDelegate implements Delegatable{
 				try {
 					token = as.login(userTemp.getUsername(), userTemp.getPassword());
 					String[] tokens = token.split(":", 2);
-					System.out.println(token);
+
 					
 					t2 = tokens[1];
 

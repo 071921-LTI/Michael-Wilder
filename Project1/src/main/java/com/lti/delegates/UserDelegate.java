@@ -64,7 +64,7 @@ public class UserDelegate implements Delegatable{
 		User user = null;
 		try {
 			user = us.getUserByUsername(username);
-			System.out.println(user);
+
 		} catch (UserNotFoundException e) {
 			log.warn("User Not Found");
 			e.printStackTrace();
@@ -83,7 +83,6 @@ public class UserDelegate implements Delegatable{
 					rs.setStatus(200);
 					List<User> u = null;
 					u = us.getUsers();
-					System.out.println(u);
 					try (PrintWriter pw = rs.getWriter()) {
 						pw.write(new ObjectMapper().writeValueAsString(u));
 					}
