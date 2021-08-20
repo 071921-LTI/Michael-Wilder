@@ -45,8 +45,8 @@ function getReimbs() {
                 let status = document.createElement('td');
                 let type = document.createElement('td');
 
-                reimbId.innerHTML = "$" + response[i].reimbId;
-                amount.innerHTML = response[i].reimbAmount;
+                reimbId.innerHTML = response[i].reimbId;
+                amount.innerHTML = "$" + response[i].reimbAmount;
                 description.innerHTML = response[i].reimnbDes;
                 timeSub.innerHTML = getTimestamp(response[i].reimbSub);
                 timeRes.innerHTML = getTimestamp(response[i].reimbRes);
