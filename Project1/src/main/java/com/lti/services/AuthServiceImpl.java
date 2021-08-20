@@ -31,7 +31,6 @@ public class AuthServiceImpl implements AuthService{
 		if (token == null) {
 			return null;
 		} else {
-			System.out.println("here"+token);
 			return token.split(":")[0];
 		}
 	}
