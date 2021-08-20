@@ -26,7 +26,7 @@ function getUser() {
                 let tr = document.createElement('tr');
                 tr.style.display = "";
      
-                tr.className = "clickRows";
+
                 tr.setAttribute("id", response.userId);
                 
                 let username = document.createElement('td');

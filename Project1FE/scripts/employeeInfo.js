@@ -52,7 +52,7 @@ function update() {
     xhr.setRequestHeader("Authorize", token);
 
     xhr.send(reqBody);
-
+    setTimeout(function(){location.reload()}, 500);
 
 }
 
@@ -75,8 +75,7 @@ function getUser() {
           
                 let tr = document.createElement('tr');
                 tr.style.display = "";
-     
-                tr.className = "clickRows";
+
                 tr.setAttribute("id", response.userId);
                 
                 let username = document.createElement('td');
@@ -114,10 +113,3 @@ function getUser() {
 
 }
 getUser();
-function setValues(user) {
-    username.value = user.username;
-    password.value = user.password;
-    first.value = user.firstName;
-    last.value = user.lastName;
-    email.value = user.email;
-}

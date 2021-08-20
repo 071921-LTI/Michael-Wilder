@@ -28,7 +28,6 @@ function getReimbs() {
                 let tr = document.createElement('tr');
                 tr.style.display = "";
 
-                tr.className = "clickRows";
                 tr.setAttribute("id", response[i].reimbId);
                 
                 let amount = document.createElement('td');
@@ -41,7 +40,7 @@ function getReimbs() {
                 let type = document.createElement('td');
 
                 
-                amount.innerHTML = response[i].reimbAmount;
+                amount.innerHTML = "$" + response[i].reimbAmount;
                 description.innerHTML = response[i].reimnbDes;
                 timeSub.innerHTML = getTimestamp(response[i].reimbSub);
                 timeRes.innerHTML = getTimestamp(response[i].reimbRes);

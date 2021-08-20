@@ -24,7 +24,6 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="employeeSR.html">Submit Reimbursement</a>
-              <a class="nav-link" href="#">Upload Receipt</a>
               <a class="nav-link" href="employeePR.html">View Pending Reimbursements<span class="sr-only">(current)</span></a>
               <a class="nav-link" href="employeeRR.html">View Resolved Reimbursements</a>
               <a class="nav-link" href="employeeInfo.html">View Your Information</a>
@@ -45,10 +44,9 @@
           <div id="success">
           </div>
         
-                        <input type="number" id="amount" min="0" name="" placeholder="Amount"> 
+                        <input type="number" id="amount" min="0" step=".01" name="" placeholder="Amount"> 
                         
-                        <input type="description"  id="description" name="" placeholder="Description"> 
-
+                        <textarea id="description" placeholder="Description" rows="5" cols="50" maxlength="250"></textarea>
                             <select class="dropdown" id="type">
                               <option>---Reimbursement Type---</option>
                               <option>Lodging</option>
